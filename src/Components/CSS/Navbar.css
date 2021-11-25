@@ -1,5 +1,53 @@
-#logo:hover{color: red;}
 
-.nav-item:hover{color: red !important}
+#bootstrap-overrides .nav-elem:hover{background-color: rgba(70, 70, 70, 0.096) }
 
-.nav-item{color:rgba(247, 0, 0, 0.678) !important}
+#logo{color:rgb(255, 0, 0) }
+#nav-elem1{font-weight: bold; }
+
+
+#bootstrap-overrides .nav-elem{border-radius: 20px;color:rgb(255, 0, 0)  }   
+
+#search-btn{color:rgb(255, 0, 0);
+    border-radius: 20px;
+ }
+#logo{ border-radius: 20px;
+    padding-left: 10px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom: 3px;}
+
+#navbar1 {
+    box-shadow: 10px 2px 15px grey;
+  }
+
+#search-bar{
+    border-radius: 20px;
+    min-width: 100px;
+    background-color: rgba(128, 128, 128, 0.089);
+    border-color: rgba(128, 128, 128, 0.089);
+}
+#search-bar:focus{
+    border-color: #ff000036;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+#search-btn:focus{
+    background-color: rgba(70, 70, 70, 0.096);
+    border-color: #ff000000;
+  box-shadow: none;
+}
+#search-btn:hover{
+    background-color: rgba(70, 70, 70, 0.096)
+}
+
+
+
+
+
+
+
+
+
+
+
+
