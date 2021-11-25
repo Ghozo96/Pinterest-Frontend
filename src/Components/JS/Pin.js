@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import '../CSS/Pin.css';
+import BoardList from './BoardList';
+import OptionsList  from './OptionsList';
 import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
+import '../../../node_modules/bootstrap/dist/js/bootstrap';
+
 
 class Pin extends Component {
 	state = {
@@ -27,16 +31,7 @@ class Pin extends Component {
 				<div className='metaContainer d-flex flex-column p-3'>
 					<div className='optionsBar d-flex align-items-center align-content-center justify-content-between'>
 						<div className='d-flex align-items-center align-content-center flex-wrap'>
-							<div>
-								<button type='button' className='btn optionsLeft m-1'>
-									<i class='fas fa-ellipsis-h'></i>
-								</button>
-							</div>
-							<div>
-								<button type='button' className='btn optionsLeft m-1'>
-									<i class='fas fa-share-square'></i>
-								</button>
-							</div>
+							<OptionsList />
 							<div>
 								<button type='button' className='btn optionsLeft m-1'>
 									<i class='fas fa-link'></i>
@@ -44,35 +39,7 @@ class Pin extends Component {
 							</div>
 						</div>
 						<div className='d-flex align-items-center align-content-center  flex-wrap'>
-							<div class='dropdown'>
-								<button
-									class='btn btn-secondary dropdown-toggle'
-									type='button'
-									id='dropdownMenuButton1'
-									data-bs-toggle='dropdown'
-									aria-expanded='false'>
-									Board
-								</button>
-								<ul
-									class='dropdown-menu'
-									aria-labelledby='dropdownMenuButton1'>
-									<li>
-										<a class='dropdown-item' href='#'>
-											Action
-										</a>
-									</li>
-									<li>
-										<a class='dropdown-item' href='#'>
-											Another action
-										</a>
-									</li>
-									<li>
-										<a class='dropdown-item' href='#'>
-											Something else here
-										</a>
-									</li>
-								</ul>
-							</div>
+							<BoardList />
 							<div>
 								<button
 									type='button'
