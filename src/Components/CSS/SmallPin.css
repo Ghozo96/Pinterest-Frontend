@@ -1,0 +1,30 @@
+.smallPinContainer {
+    cursor: zoom-in;
+    position: relative;
+}
+
+.smallImg {
+    min-width: 10rem;
+    border-radius: 1rem;
+}
+
+.smallImg:hover {
+    filter: brightness(70%);
+}
+
+
+.hoverPinOptions {
+    opacity: 0;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+.smallImg:hover ~ .hoverPinOptions {
+    opacity: 1;
+}
+
+.hoverPinOptions:hover{
+    opacity: 1;
+}
+
