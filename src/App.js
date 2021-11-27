@@ -4,6 +4,8 @@ import Register from './Components/JS/Register';
 import Login from './Components/JS/Login';
 import Pin from './Components/JS/Pin';
 import NavBar from './Components/JS/Navbar';
+import Pins from './Components/JS/Pins';
+import CreatePin from './Components/JS/CreatePin';
 
 function App() {
 	return (
@@ -13,6 +15,7 @@ function App() {
 				<Register />
 				<Login />
 				<Pin />
+				
 			</div>
 		</Router>
 	);
