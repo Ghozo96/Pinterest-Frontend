@@ -1,0 +1,11 @@
+#dd-nav-setting{ border-radius: 20px; width:max-content;max-height: 400px;min-width:250px; overflow-x: hidden;}
+
+
+#profile_img{width: 60px;height: 60px; border-radius: 50%;}
+
+#setting-text{
+    width: 250px;
+    
+}
+
+#setting-elem:hover{border-radius: 10px;}

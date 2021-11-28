@@ -16,7 +16,7 @@ class SmallPin extends Component {
                     <img  onClick={() => this.goTo()} className='img-fluid smallImg' src={this.props.imgLink} alt=''></img>
                     <div className='hoverPinOptions'>
                         <BoardList />
-                        <button className='btn btn-danger m-2 saveButton'>Save</button>
+                        <button className='btn btn-danger m-2 rounded-pill saveButton'>Save</button>
                     </div>
 
                 </div>

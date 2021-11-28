@@ -4,27 +4,28 @@ import BoardList from './BoardList';
 import OptionsList  from './OptionsList';
 import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
 import '../../../node_modules/bootstrap/dist/js/bootstrap';
+import Comment from './Comments';
 
 
 class Pin extends Component {
 	state = {
 		imgLink:
-			'https://i.pinimg.com/564x/c1/7c/61/c17c612afb745ea240ee602d7baae533.jpg',
+			'https://i.pinimg.com/564x/07/f5/93/07f59373371952f07abb88f7879a12f7.jpg',
 		websiteLink: 'https://www.behance.net',
 		websiteTitle: 'behance.net',
-		imgTitle: 'Concrete planter',
+		imgTitle: 'Img 2',
 		imgDesc:
 			'#design #architecture #furniture #designlove #interiordesign #interiors #architecturephotography #design #architecture #furniture #designlove #interiordesign #interiors #architecturephotography',
 		ownerProfile: 'https://www.pinterest.com/mohmosnaw',
 		ownerProfileImg:
 			'https://i.pinimg.com/564x/fa/48/a7/fa48a71531f8de2b40c6a10aad511691.jpg',
-		ownerFollowers: '10 Followers',
-		meImg: 'https://i.pinimg.com/564x/fa/48/a7/fa48a71531f8de2b40c6a10aad511691.jpg',
+		ownerFollowers: ' Followers',
+		meImg: 'https://i.pinimg.com/736x/b8/ce/d9/b8ced96199e56d254419afc00347769c.jpg',
 	};
 
 	render() {
 		return (
-			<div className='container pinContainer d-flex flex-lg-row flex-column my-5'>
+			<div className='container pinContainer d-flex flex-lg-row flex-column my-5 text-start'>
 				<div className='imgContainer d-flex align-items-start justify-content-center'>
 					<img src={this.state.imgLink} alt=''></img>
 				</div>
@@ -33,7 +34,7 @@ class Pin extends Component {
 						<div className='d-flex align-items-center align-content-center flex-wrap'>
 							<OptionsList />
 							<div>
-								<button type='button' className='btn optionsLeft m-1'>
+								<button type='button' className='btn optionsLeft m-1 rounded-pill'>
 									<i class='fas fa-link'></i>
 								</button>
 							</div>
@@ -43,7 +44,7 @@ class Pin extends Component {
 							<div>
 								<button
 									type='button'
-									className='btn optionsRight m-1 btn-danger'>
+									className='btn optionsRight m-1 btn-danger rounded-pill'>
 									Save
 								</button>
 							</div>
@@ -65,7 +66,7 @@ class Pin extends Component {
 							<div>
 								<a href={this.state.ownerProfile}>
 									<img
-										className='ownerImg m-2'
+										className='ownerImg rounded-circle m-2'
 										src={this.state.ownerProfileImg}
 										alt=''></img>
 								</a>
@@ -73,7 +74,7 @@ class Pin extends Component {
 							<div>
 								<span>
 									<a className='link' href={this.state.ownerProfile}>
-										Mohammad Mousad
+										User Name
 									</a>
 								</span>
 								<br />
@@ -84,34 +85,15 @@ class Pin extends Component {
 							<div>
 								<button
 									type='button'
-									className='btn optionsRight m-1 btn-danger'>
+									className='btn optionsRight m-1 btn-danger rounded-pill'>
 									Follow
 								</button>
 							</div>
 						</div>
 					</div>
-					<div className='commentsContainer d-flex flex-column  align-content-start'>
-						{' '}
-						{/*align-items-start*/}
-						<div>
-							{' '}
-							<h3> Comments </h3>{' '}
-						</div>
-						<div className='addComment d-flex align-items-center align-content-center'>
-							<div>
-								<img className='meImg m-3' src={this.state.meImg} alt=''></img>
-							</div>
-							<div className='flex-grow-1'>
-								<input
-									type='text'
-									class='form-control'
-									placeholder='Add Comment'
-									aria-label='Username'
-									aria-describedby='basic-addon1'
-								/>
-							</div>
-						</div>
-					</div>
+
+					<Comment />
+					
 				</div>
 			</div>
 		);

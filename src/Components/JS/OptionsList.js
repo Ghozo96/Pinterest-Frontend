@@ -8,9 +8,9 @@ class OptionsList extends Component {
                 <i class="fas fa-ellipsis-h"></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item">Action</a></li>
+                <li><a class="dropdown-item">Another action</a></li>
+                <li><a class="dropdown-item">Something else here</a></li>
             </ul>
         </div>
     )
