@@ -15,9 +15,11 @@ const Register = () => {
 	const [ageNotInt, setAgeNotInt] = useState(false);
 
 	let redBorder = 'border-danger';
+	let flag = false;
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		console.log(process.env.REACT_APP_HOST_IP);
 
 		if (isFormFieldEmpty(e)) {
 			setIsEmpty(true);
@@ -52,6 +54,7 @@ const Register = () => {
 			setPassDontMatch(false);
 			setAgeNotInt(false);
 		} else {
+			console.log('Im here')
 			setIsEmpty(false);
 			setEmailError(false);
 			setPassNotStrong(false);
@@ -63,8 +66,33 @@ const Register = () => {
 			setPassword(e.target.password.value);
 			setPassword2(e.target.password2.value);
 			setAge(e.target.age.value);
+			flag=true;
 			clearForm(e);
 		}
+
+		return flag;
+	};
+
+	const postFormData = async (email1, password1) => {
+		console.log(email1);
+		console.log(password2);
+		console.log('-----');
+		const obj = {
+			username: email,
+			password: password,
+		};
+		const requestOptions = {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify(obj),
+		};
+
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/register`,
+			requestOptions
+		);
+		let data = await response.json();
+		console.log(data);
 	};
 
 	const clearForm = (e) => {

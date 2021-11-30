@@ -24,8 +24,28 @@ const Login = () => {
 
 			setEmail(e.target.email.value);
 			setPassword(e.target.password.value);
+			postFormData(e);
 			clearForm(e);
 		}
+	};
+
+	const postFormData = async (e) => {
+		const obj = {
+			username: e.target.email.value,
+			password: e.target.password.value,
+		};
+		const requestOptions = {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify(obj),
+		};
+
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/register`,
+			requestOptions
+		);
+		let data = await response.json();
+		console.log(data);
 	};
 
    const clearForm = (e) => {

@@ -10,4 +10,5 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+    box-shadow: rgba(0, 0, 0, 0.356);
 }
