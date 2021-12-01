@@ -14,7 +14,7 @@ class SmallPin extends Component {
 				<div className='card border-0' style={{width: '22rem'}}>
 					<Link to ='/pin'>
 						<img
-							src={this.props.image}
+							src={this.props.pinImage}
 							className='card-img-top'
                             style={{height: '22rem', objectFit: 'cover'}}
 							alt=''
