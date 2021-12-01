@@ -4,48 +4,46 @@ import AddButton from './AddButton';
 import Spinner from './Spinner';
 
 class Pins extends React.Component {
-	state = {
-		pinsData: [],
-		loading: false,
-	};
+	// state = {
+	// 	pinsData: [],
+	// 	loading: false,
+	// };
 
-	componentDidMount = async () => {
-		console.log('im in pins');
-		this.setState({loading: true})
+	// shouldComponentUpdate = (nextProps) => {
+	// 	if(this.props.searchedParam != nextProps.searchedParam) return true;
+	// 	else return false;
+	// }
 
-		let response = null;
-		if(this.props.searchedParam != ''){
-			response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list?search=${this.props.searchedParam}`);
-		}
-		else {
-			response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
-		}
-		let data = await response.json();
+	// componentDidUpdate = async (prevProps) => {
+	// 	this.setState({loading: true})
 
-		this.setState({pinsData: data.results}, () => this.setState({loading: false}));
-	};
+	// 	if(this.props.searchedParam != prevProps.searchedParam){
+	// 		this.response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list?search=${this.props.searchedParam}`);
+	// 	}
+	// 	else {
+	// 		this.response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
+	// 	}
+	// 	this.data = await this.response.json();
+	// 	this.setState({pinsData: this.data.results}, () => this.setState({loading: false}));
+	// };
 
 	render() {
-		if (this.state.loading) {
-			return <Spinner />;
-		} else {
-			return (
-				<div>
-					<AddButton />
-					<div className=' d-flex flex-wrap justify-content-evenly'>
-						{this.state.pinsData.map((pin) => {
-							return (
-								<SmallPin
-									key={pin.id}
-									title={pin.title}
-									pinImage={pin.pin_picture}
-								/>
-							);
-						})}
-					</div>
+		return (
+			<div>
+				<AddButton />
+				<div className=' d-flex flex-wrap justify-content-evenly'>
+					{this.props.pinsData.map((pin) => {
+						return (
+							<SmallPin
+								key={pin.id}
+								title={pin.title}
+								pinImage={pin.pin_picture}
+							/>
+						);
+					})}
 				</div>
-			);
-		}
+			</div>
+		);
 	}
 }
 

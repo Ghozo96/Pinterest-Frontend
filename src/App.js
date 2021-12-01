@@ -29,7 +29,10 @@ class App extends Component {
 		token: '',
 		isLoggedIn: false,
 		isRegistered: false,
-		searchedParam: ''
+		pinsData: [],
+		noResults: false,
+		loading: false,
+		searchedParam: '',
 	};
 
 	receiveTokenAndRedirect = (token, isLoggedIn) => {
@@ -42,17 +45,54 @@ class App extends Component {
 
 	redirectToLoginAfterRegister = (isRegistered) => {
 		this.setState({
-			isRegistered: isRegistered
+			isRegistered: isRegistered,
 		});
-	}
+	};
 
-	sendSearchParamDownToPins = (param) => {
-		console.log(param)
-		this.setState({searchedParam: param})
-		console.log(this.setState)
-	}
+	fetchSearchedPins = async (param) => {
+		this.setState({searchedParam: param}, async () => {
+			this.setState({loading: true});
+			let response = await fetch(
+				`${process.env.REACT_APP_HOST_IP}/pin/list?search=${this.state.searchedParam}`
+			);
+			let data = await response.json();
+			// console.log(data)
+			if (data.count == 0) {
+				this.setState({noResults: true, loading: false});
+			} else {
+				this.setState({noResults: false});
+				this.setState({pinsData: data.results}, () =>
+					this.setState({loading: false})
+				);
+			}
+		});
+	};
+
+	componentDidMount = async () => {
+		this.setState({loading: true});
+		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
+		let data = await response.json();
+		this.setState({pinsData: data.results}, () =>
+			this.setState({loading: false})
+		);
+	};
+
+	NavigateToHomepage = async () => {
+		this.setState({loading: true, noResults: false});
+		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
+		let data = await response.json();
+		this.setState({pinsData: data.results}, () =>
+			this.setState({loading: false})
+		);
+	};
 
 	render() {
+		let noResultsText = (
+			<div className='text-center lead fs-3 mt-3'>
+				No results found for {this.state.searchedParam}
+			</div>
+		);
+
 		return (
 			<Router>
 				<div>
@@ -66,7 +106,11 @@ class App extends Component {
 									) : (
 										<div>
 											<NavBar2 />
-											<Register redirectToLoginAfterRegister={this.redirectToLoginAfterRegister}/>
+											<Register
+												redirectToLoginAfterRegister={
+													this.redirectToLoginAfterRegister
+												}
+											/>
 										</div>
 									)}
 								</Fragment>
@@ -113,8 +157,21 @@ class App extends Component {
 							path='/pins'
 							element={
 								<Fragment>
-									<NavBar sendSearchParamUp={this.sendSearchParamDownToPins}/>
-									<Pins searchedParam={this.state.searchedParam}/>
+									<NavBar
+										sendSearchParamUp={this.fetchSearchedPins}
+										NavigateToHomepage={this.NavigateToHomepage}
+									/>
+									{this.state.loading ? (
+										<Spinner />
+									) : (
+										<div>
+											{this.state.noResults ? (
+												noResultsText
+											) : (
+												<Pins pinsData={this.state.pinsData} />
+											)}
+										</div>
+									)}
 								</Fragment>
 							}
 						/>

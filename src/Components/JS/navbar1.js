@@ -7,10 +7,15 @@ import Spinner from './Spinner';
 
 class NavBar extends Component {
 
-	handleSubmit = async (e) => {
+	handleSubmit = (e) => {
 		e.preventDefault();
 		let param = e.target.search.value;
 		this.props.sendSearchParamUp(param);
+		e.target.search.value= '';
+	};
+
+	handleClick = (e) => {
+		this.props.NavigateToHomepage();
 	};
 
 	render() {
@@ -20,14 +25,16 @@ class NavBar extends Component {
 					<Link
 						to='/pins'
 						className='mt-1 ms-4 nav-item nav-link  nav-elem'
-						id='logo'>
+						id='logo'
+						onClick={this.handleClick}>
 						<i className='fab fa-pinterest fa-2x'></i>
 					</Link>
 
 					<Link
 						to='/pins'
 						className='nav-item nav-link  nav-elem me-1 mt-0 lead'
-						id='nav-elem1'>
+						id='nav-elem1'
+						onClick={this.handleClick}>
 						Home
 					</Link>
 
