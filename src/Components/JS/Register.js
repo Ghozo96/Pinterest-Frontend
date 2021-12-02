@@ -100,6 +100,7 @@ class Register extends Component {
 		const obj = {
 			username: email,
 			password: password,
+			password_confirm: password
 		};
 		const requestOptions = {
 			method: 'POST',
