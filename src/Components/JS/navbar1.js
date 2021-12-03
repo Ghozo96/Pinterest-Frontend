@@ -18,6 +18,11 @@ class NavBar extends Component {
 		this.props.NavigateToHomepage();
 	};
 
+	sendLogoutClickUp = () => {
+		this.props.logout();
+	}
+
+
 	render() {
 		return (
 			<div className='my-0' id='bootstrap-overrides'>
@@ -68,7 +73,7 @@ class NavBar extends Component {
 						<i className='far fa-user-circle fa-lg'></i>
 					</Link>
 
-					<SettingDD />
+					<SettingDD username={window.localStorage.getItem("username")} receiveLogoutClick={this.sendLogoutClickUp}/>
 				</nav>
 			</div>
 		);

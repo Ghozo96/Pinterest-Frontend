@@ -11,7 +11,8 @@ class Login extends Component {
 		emailError: false,
 		token: '',
 		wrongCredentials: false,
-		isLoggedIn: false
+		isLoggedIn: false,
+		user_id: 0
 	};
 
 	redBorder = 'border-danger';
@@ -57,18 +58,23 @@ class Login extends Component {
 			requestOptions
 		);
 		let data = await response.json();
-		console.log(response.status);
+		// console.log(response.status);
 		if (response.status == 400) {
 			this.setState({wrongCredentials: true});
 		} else if (response.status == 200) {
 			this.setState(
 				{
 					token: data.token,
+					user_id: data.user_id,
 					wrongCredentials: false,
 					isLoggedIn: true
 				},
 				() => {
-					this.props.sendTokenUpAndRedirect(this.state.token, this.state.isLoggedIn)
+					console.log(data);
+					window.localStorage.setItem('token', data.token)
+					window.localStorage.setItem('user_id', data.user_id)
+					window.localStorage.setItem('username', data.username)
+					this.props.sendTokenUpAndRedirect(this.state.token, this.state.isLoggedIn, this.state.user_id)
 				}
 			);
 			this.clearForm(e);

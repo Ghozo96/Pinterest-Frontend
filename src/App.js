@@ -27,6 +27,8 @@ import Spinner from './Components/JS/Spinner';
 class App extends Component {
 	state = {
 		token: '',
+		user_id: 0,
+		username: '',
 		isLoggedIn: false,
 		isRegistered: false,
 		pinsData: [],
@@ -35,12 +37,14 @@ class App extends Component {
 		searchedParam: '',
 	};
 
-	receiveTokenAndRedirect = (token, isLoggedIn) => {
+	receiveTokenAndRedirect = (token, isLoggedIn, user_id) => {
 		this.setState({
 			token: token,
 			isLoggedIn: isLoggedIn,
+			user_id: user_id,
 		});
-		console.log(token);
+		// console.log(token);
+		// console.log(user_id);
 	};
 
 	redirectToLoginAfterRegister = (isRegistered) => {
@@ -69,6 +73,21 @@ class App extends Component {
 	};
 
 	componentDidMount = async () => {
+		//keeping the user logged in
+		const loggedInUser = {
+			token: localStorage.getItem('token'),
+			id: localStorage.getItem('user_id'),
+			username: localStorage.getItem('username'),
+		};
+		if (loggedInUser) {
+			this.setState({
+				token: loggedInUser.token,
+				user_id: loggedInUser.id,
+				username: loggedInUser.username,
+			});
+		}
+
+		//fetching pins
 		this.setState({loading: true});
 		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
 		let data = await response.json();
@@ -77,14 +96,25 @@ class App extends Component {
 		);
 	};
 
+	logout = () => {
+		this.setState({
+			token: '',
+			user_id: 0,
+			username: '',
+			isLoggedIn: false
+		});
+		window.localStorage.clear();
+	};
+
 	NavigateToHomepage = async () => {
 		this.setState({loading: true, noResults: false});
 		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
 		let data = await response.json();
 		this.setState({pinsData: data.results}, () =>
 			this.setState({loading: false})
-		);
+		)
 	};
+
 
 	render() {
 		let noResultsText = (
@@ -97,6 +127,25 @@ class App extends Component {
 			<Router>
 				<div>
 					<Routes>
+						<Route
+							path='/'
+							element={
+								<Fragment>
+									<NavBar2 />
+									{this.state.loading ? (
+										<Spinner />
+									) : (
+										<div>
+											{this.state.noResults ? (
+												noResultsText
+											) : (
+												<Pins pinsData={this.state.pinsData} />
+											)}
+										</div>
+									)}
+								</Fragment>
+							}
+						/>
 						<Route
 							path='/register'
 							element={
@@ -139,8 +188,12 @@ class App extends Component {
 							path='/profile'
 							element={
 								<Fragment>
-									<NavBar />
-									<ProfilePage />
+									<NavBar
+										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
+									/>
+									<ProfilePage user_id={this.state.user_id} username={this.state.username}/>
 								</Fragment>
 							}
 						/>
@@ -148,8 +201,12 @@ class App extends Component {
 							path='/profile/edit'
 							element={
 								<Fragment>
-									<NavBar />
-									<SettingPage />
+									<NavBar
+										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
+									/>
+									<SettingPage username={this.state.username}/>
 								</Fragment>
 							}
 						/>
@@ -158,8 +215,11 @@ class App extends Component {
 							element={
 								<Fragment>
 									<NavBar
+										logout={this.logout}
 										sendSearchParamUp={this.fetchSearchedPins}
 										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
 									/>
 									{this.state.loading ? (
 										<Spinner />
@@ -179,7 +239,11 @@ class App extends Component {
 							path='/pin'
 							element={
 								<Fragment>
-									<NavBar />
+									<NavBar
+										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
+									/>
 									<Pin />
 								</Fragment>
 							}
@@ -188,7 +252,11 @@ class App extends Component {
 							path='/pin/create'
 							element={
 								<Fragment>
-									<NavBar />
+									<NavBar
+										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
+									/>
 									<CreatePin />
 								</Fragment>
 							}
@@ -197,7 +265,11 @@ class App extends Component {
 							path='/board/create'
 							element={
 								<Fragment>
-									<NavBar />
+									<NavBar
+										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
+									/>
 									<CreateBoard />
 								</Fragment>
 							}
@@ -206,7 +278,11 @@ class App extends Component {
 							path='/board/edit'
 							element={
 								<Fragment>
-									<NavBar />
+									<NavBar
+										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
+									/>
 									<EditBoard />
 								</Fragment>
 							}

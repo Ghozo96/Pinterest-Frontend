@@ -1,47 +1,50 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, Component} from 'react';
 import { Link } from 'react-router-dom';
 import BoardList from './BoardList';
 
-const Board = () => {
-	return (
-		<Fragment>
-         <div className='card border-0' style={{width: '22rem'}}>
-					<Link to ='/pin'>
-						<div>
-                     <img
-                        className='card d-inline border-0'
-                        style={imgStyle}
-                        src='https://i.pinimg.com/564x/07/f5/93/07f59373371952f07abb88f7879a12f7.jpg'
-                        alt=''
-                     />
-                     <img
-                        className='d-inline card border-0'
-                        style={imgStyle2}
-                        src='https://i.pinimg.com/564x/a9/69/b4/a969b4155e1d02f89de39b93f099b8a5.jpg'
-                        alt=''
-                     />
-                     <img
-                        className='d-inline card border-0'
-                        style={imgStyle3}
-                        src='https://i.pinimg.com/564x/0e/f5/5a/0ef55ab76c4afb9d5a2b132cde91e8c9.jpg'
-                        alt=''
-                     />
-                  </div>
-					</Link>
-                    <div className='hoverPinOptions'>
-						<BoardList />
-						<button className='btn btn-danger m-2 rounded-pill saveButton'>
-							Save
-						</button>
+class Board extends Component {
+	render(){
+		return (	
+			<Fragment>
+				<div className='card border-0'>
+						<Link to ='/pin'>
+							<div>
+							
+								<img
+									className='card d-inline border-0'
+									style={imgStyle}
+									src={this.props.pinPic1}
+									alt=''
+								/>
+								<img
+									className='d-inline card border-0'
+									style={imgStyle2}
+									src={this.props.pinPic2}
+									alt=''
+								/>
+								<img
+									className='d-inline card border-0'
+									style={imgStyle3}
+									src={this.props.pinPic3}
+									alt=''
+								/>
+							</div>
+						</Link>
+							  <div className='hoverPinOptions'>
+							<BoardList />
+							<button className='btn btn-danger m-2 rounded-pill saveButton'>
+								Save
+							</button>
+						</div>
+						<div className='card-body'>
+							<h6 className='card-text lead text-center'>
+								{this.props.name}
+							</h6>
+						</div>
 					</div>
-					<div className='card-body'>
-						<h6 className='card-text lead text-center'>
-							asdadad
-						</h6>
-					</div>
-				</div>
-		</Fragment>
-	);
+			</Fragment>
+		);
+	}
 };
 
 const imgStyle = {
