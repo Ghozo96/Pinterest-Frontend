@@ -18,7 +18,7 @@ class SettingPage extends React.Component {
 			country:'',
 
 			profile_picture:'',
-			userid: window.localStorage.getItem('user_id'),
+			userid:25,
 		
 			loading:true,
 			submited:false,
@@ -28,7 +28,6 @@ class SettingPage extends React.Component {
 			myheader : new Headers(),	
 			pro_picERROR :'',
         }
-		this.state.myheader.append("Authorization", `Token ${window.localStorage.getItem('token')}`);
     }
 
 	getUrl=(id)=>{
@@ -36,6 +35,7 @@ class SettingPage extends React.Component {
 	}
 
 	componentDidMount = async () => {	
+		this.state.myheader.append("Authorization", "Token f9bc073aa674ffe3f77426665715c6e14edc3b46");
 		var requestOptions = {
 			method: 'GET',
 			headers: this.state.myheader, };
@@ -67,7 +67,6 @@ class SettingPage extends React.Component {
 		let data = await response.json();
 
 		console.log(data)
-		window.localStorage.setItem('profile_picture',data.profile_picture)
 		this.setState({submited:true})
 		// here we will redirect to the home page
 	}

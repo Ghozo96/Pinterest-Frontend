@@ -42,6 +42,7 @@ class Login extends Component {
 		}
 	};
 
+
 	postFormData = async (email, password, e) => {
 		const obj = {
 			username: email,
@@ -74,6 +75,7 @@ class Login extends Component {
 					window.localStorage.setItem('token', data.token)
 					window.localStorage.setItem('user_id', data.user_id)
 					window.localStorage.setItem('username', data.username)
+					window.localStorage.setItem('profile_picture', process.env.REACT_APP_HOST_IP +data.profile_picture)
 					this.props.sendTokenUpAndRedirect(this.state.token, this.state.isLoggedIn, this.state.user_id)
 				}
 			);

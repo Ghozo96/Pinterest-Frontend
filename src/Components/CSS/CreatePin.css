@@ -7,15 +7,14 @@
 
 }
 
+
 .uploadIcon {
-    font-size: 5rem;
-    color: gray;
+    width: 300px;
     cursor: pointer;
     border: 4px gray dashed;
-    padding: 60px;
+    padding: 20px;
     margin: 20px;
     border-radius: 1rem;
-
 }
 
 .uploadIcon:hover {

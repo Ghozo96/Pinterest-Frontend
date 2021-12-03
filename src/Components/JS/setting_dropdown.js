@@ -5,6 +5,7 @@ import '../CSS/setting_dropdown.css';
 class SettingDD extends Component {
 
 
+
 	handleClick = () => {
 		this.props.receiveLogoutClick();
 	}
@@ -37,7 +38,7 @@ class SettingDD extends Component {
 									<div className='align-self-center'>
 										<img
 											id='profile_img'
-											src='https://i.pinimg.com/736x/b8/ce/d9/b8ced96199e56d254419afc00347769c.jpg'></img>
+											src= {window.localStorage.getItem('profile_picture')} ></img>
 									</div>
 									<div className=' ms-2 ' id='setting-text'>
 										<p className='text-capitalize text-wrap text-start fs-6 fw-bold mt-3'>
