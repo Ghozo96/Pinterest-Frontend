@@ -25,12 +25,16 @@ class CreatePin extends Component {
         userid : window.localStorage.getItem('user_id'),
         username: window.localStorage.getItem('username'),
         profile_picture :window.localStorage.getItem('profile_picture'),
-        token : 'f9bc073aa674ffe3f77426665715c6e14edc3b46' ,
+        token : window.localStorage.getItem('token') ,
         
         myheader : new Headers(),	
          }
-         this.state.myheader.append("Authorization", "Token f9bc073aa674ffe3f77426665715c6e14edc3b46");
-    };
+        };
+
+    componentDidMount=()=>{
+        this.state.myheader.append("Authorization", `Token ${this.state.token}`);
+
+    }
 
 
     getUrl=(id)=>{

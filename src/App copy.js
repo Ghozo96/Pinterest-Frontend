@@ -24,7 +24,7 @@ import Boards from './Components/JS/Boards';
 import {Component, Fragment} from 'react';
 import Spinner from './Components/JS/Spinner';
 
-class App extends Component {
+class App2 extends Component {
 	state = {
 		token: '',
 		user_id: 0,
@@ -237,11 +237,16 @@ class App extends Component {
 						/>
 						<Route
 							path='/pin/details/:id'
-
+							
 							element={
-								
+								<Fragment>
+									<NavBar
+										NavigateToHomepage={this.NavigateToHomepage}
+										user_id={this.state.user_id}
+										username={this.state.username}
+									/>
 									<Pin />
-								
+								</Fragment>
 							}
 						/>
 						<Route

@@ -13,7 +13,7 @@ class SettingPage extends React.Component {
 			username:'',
 			email:'',
 			short_bio:'',
-			website:'',
+			website:"",
 			gender:'',
 			country:'',
 
@@ -27,6 +27,8 @@ class SettingPage extends React.Component {
 			changedPP:false,
 			myheader : new Headers(),	
 			pro_picERROR :'',
+			submitting_msg:'',
+		
         }
 		this.state.myheader.append("Authorization", `Token ${window.localStorage.getItem('token')}`);
     }
@@ -57,19 +59,27 @@ class SettingPage extends React.Component {
 		if (this.state.changedPP){
 			formdata.append('profile_picture', e.target.profile_picture.files[0] ,  e.target.profile_picture.files[0].name);
 		}
-
+		console.log(this.state.website)
 		var requestOptions = {
 		method: 'PATCH',
 		headers: this.state.myheader,
 		body:  formdata, };
 
 		let response = await fetch(this.getUrl(this.state.userid), requestOptions);
-		let data = await response.json();
+			let data = await response.json();
+			console.log(data)
+			console.log(response)
 
-		console.log(data)
-		window.localStorage.setItem('profile_picture',data.profile_picture)
-		this.setState({submited:true})
-		// here we will redirect to the home page
+
+		if (response.status == 400) {
+			this.setState({submited:true,
+				submitting_msg:'Opps, an error occurred, please try again later',})
+		} else {
+			window.localStorage.setItem('profile_picture',data.profile_picture)
+			this.setState({submited:true,
+			submitting_msg:'your profile has been edited successfully',})
+		}
+
 	}
 
 	handleSubmit = (e) => {
@@ -289,7 +299,7 @@ class SettingPage extends React.Component {
 
 							{this.state.submited && (
 								<div className='lead fs-6 mb-3 text-success text-center'>
-									your profile has been edited successfully
+									{this.state.submitting_msg}
 								</div>
 							)}
 
