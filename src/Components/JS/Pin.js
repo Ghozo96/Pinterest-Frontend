@@ -46,7 +46,8 @@ class Pin extends Component {
 	}
 
 	componentDidMount = async () => {	
-		this.state.myheader.append('Authorization', `Token ${this.state.token}`); 		
+		this.state.myheader.append('Authorization', `Token ${this.state.token}`); 	
+
 		var requestOptions = {
 			method: 'GET',
 			headers: this.state.myheader, };
@@ -56,6 +57,7 @@ class Pin extends Component {
 
 		console.log(data)
 		console.log(this.state.myheader , this.state.token)
+
 		this.setState({...data}, () =>{ this.setState({loading: false});}	);		
 	};
 
@@ -215,7 +217,7 @@ class Pin extends Component {
 							{this.state.comments.map((mycomments) => {
 							return (
 								 <Comment  {...mycomments} 
-								//  key={mycomments.id}
+								 key={mycomments.id}
 								 />
 								);
 							})}

@@ -13,7 +13,7 @@ class Comment extends React.Component {
 							alt=''></img>
 					</div>
 					<div
-						className='container border border-danger rounded-pill d-flex align-items-center align-content-center p-3'
+						className='container border border-danger rounded-pill d-flex align-items-center align-content-center p-3 my-2'
 						style={{minHeight: '3rem'}}>
 						<span>
 							{this.props.content}

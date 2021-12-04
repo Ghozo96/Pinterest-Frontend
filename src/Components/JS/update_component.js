@@ -9,16 +9,24 @@ class UpdateComponent extends Component {
           super();
       this.state= {
           link_to:'',
+          notification_msg:'',
+        
+          pin_title:'',
 	
         }
     };
     componentDidMount =()=>{
         if (this.props.type=='follow'){
-            this.setState({ link_to: '' })
+            this.setState({ link_to: '/profile/' ,
+            notification_msg:' Followed you', })
+
         }else if(this.props.type=='comment' ){
-            this.setState({ link_to: '' })
+            this.setState({ link_to: '', 
+            notification_msg:' commented on your pin', })
+
         }else if(this.props.type=='like'){
-            this.setState({ link_to: '' })
+            this.setState({ link_to: '' ,
+            notification_msg:' Liked your pin', })
         }
     }
     render() {   
@@ -27,11 +35,12 @@ class UpdateComponent extends Component {
                 <Link class="dropdown-item" id="notif" to={this.state.link_to}>
                     <div className="d-flex flex-nowrap ">
                     <div className="align-self-center">
-                        <img id="notif_img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAMFBMVEX/q2+jQSCcNxf/rXDsl2D5pGr/r3KmRSOfOxvYgVHqlV+UKgr9qW6WLQ2gPBz/sXPNoVavAAABH0lEQVR4nO3cwW7CMBREUYgppKUt//+3dFvJelYrQcbhnP1IuVtb8eEAAAAAAAAAAAAAAAAAAAAv6/Otq42X/eHjv/iP2sfX0vF9Hk+vveE1LrGdlmPHZVzYusNF4dMpLJYKQygslgpDKCyWCkMoLJYKQygslgpDKCyWCkMoLJYKQygslgpDKCyWCkMoLJaTF97a0OSFp7F16sJj7373t27gRIX/pfD5FCpUuD2FChVuT6FChdtTuN/CdWzywvexuU8xLrfz0OQnUfs/TVSoMIfCYqkwhMJiqTCEwmKpMITCYqkwhMJiqTCEwmKpMITCYqkwhMJiqTCEwmKpMMQLFPbf+lr389bXj96fBo8dAgAAAAAAAAAAAAAAAAAAhLoDRiEgj9lGgfUAAAAASUVORK5CYII="></img>
+                        <img id="notif_img" src={process.env.REACT_APP_HOST_IP +this.props.notifier_pp}></img>
                     </div>
                     <div className="align-self-center ms-2 mt-3" id="notif-text" >
                         <p className=" text-wrap text-start fs-6">
-                            {this.props.notifier_username} {this.props.content}
+                            {this.props.notifier_username} {this.state.notification_msg} 
+                            {this.props.type!='follow'? this.props.pin_title:''}
                             {/* Hi I'm a notification to help you get the latest news */}
                             </p> </div>
                     </div>
