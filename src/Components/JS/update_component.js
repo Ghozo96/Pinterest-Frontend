@@ -17,15 +17,15 @@ class UpdateComponent extends Component {
     };
     componentDidMount =()=>{
         if (this.props.type=='follow'){
-            this.setState({ link_to: '/profile/' ,
+            this.setState({ link_to: '/profile/'+this.props.notifier,
             notification_msg:' Followed you', })
 
         }else if(this.props.type=='comment' ){
-            this.setState({ link_to: '', 
+            this.setState({ link_to:'/pin/'+this.props.pin, 
             notification_msg:' commented on your pin', })
 
         }else if(this.props.type=='like'){
-            this.setState({ link_to: '' ,
+            this.setState({ link_to: '/pin/'+this.props.pin,
             notification_msg:' Liked your pin', })
         }
     }

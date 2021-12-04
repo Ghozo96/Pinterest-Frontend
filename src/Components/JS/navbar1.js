@@ -67,7 +67,7 @@ class NavBar extends Component {
 					<Update />
 
 					<Link
-						to='/profile'
+						to={'/profile/'+ window.localStorage.getItem('user_id')}
 						className='mt-1 mx-2 nav-item nav-link nav-elem'
 						id='nav-elem4'>
 						<i className='far fa-user-circle fa-lg'></i>

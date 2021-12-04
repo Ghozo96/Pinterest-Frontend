@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+
 import '../CSS/Pin.css';
 import BoardList from './BoardList';
 import OptionsList  from './OptionsList';
@@ -188,19 +190,19 @@ class Pin extends Component {
 						<div className='d-flex align-items-center align-content-center'>
 							<div>
 								{/* replace with owner profile link with owner_id */}
-								<a href={this.state.owner}>  
+								<Link to={'/profile/'+this.state.owner}>  
 									<img
 										className='ownerImg rounded-circle m-2'
 										src={process.env.REACT_APP_HOST_IP +this.state.profilePic}
 										alt='profile pic'></img>
-								</a>
+								</Link>
 							</div>
 							<div>
 								<span>
 									{/* replace with owner profile link with owner_id */}
-									<a className='link' href={this.state.ownerProfile}>
+									<Link to={'/profile/'+this.state.owner}>  										
 										{this.state.owner_username}
-									</a>
+									</Link>
 								</span>
 								{/* <br />
 								<span>{this.state.ownerFollowers}</span> */}
