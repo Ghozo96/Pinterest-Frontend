@@ -18,7 +18,7 @@ class Pin extends Component {
 			alt_description: '',
 			pin_picture:'',
 			destination_link:'',
-			pin_saved:true,
+			pin_saved:false,
 
 			comment_content:'',
 
@@ -27,9 +27,9 @@ class Pin extends Component {
 			profilePic:'',
 			comments:[],
 			likes:'',
-			following:true, 
+			is_follow:true, 
 
-			pin_id:'34',
+			pin_id:'46',
 
 
 			userid : window.localStorage.getItem('user_id'),
@@ -87,7 +87,7 @@ class Pin extends Component {
 		headers: this.state.myheader,
 		body: formdata,
 		};
-		let followcase= this.state.following? 'unfollow':'follow'
+		let followcase= this.state. is_follow? 'unfollow':'follow'
 		console.log(followcase)
 		
 		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/profile/${this.state.owner}/${followcase}`,requestOptions);
@@ -95,7 +95,7 @@ class Pin extends Component {
 		if (response.status == 400) {
 			this.setState({wrongCredentials: true});
 		} else {
-		this.setState({following: !this.state.following})}
+		this.setState({ is_follow: !this.state. is_follow})}
 		console.log(data)
 		// change the buttun to infollow
 	}
@@ -200,7 +200,7 @@ class Pin extends Component {
 								<button
 									type='button'
 									className='btn optionsRight m-1 btn-danger rounded-pill' onClick={this.follow}>
-									{this.state.following? 'UnFollow':'Follow'}
+									{this.state. is_follow? 'UnFollow':'Follow'}
 								</button>
 								{/* <button
 									type='button'

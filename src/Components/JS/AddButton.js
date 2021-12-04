@@ -27,7 +27,7 @@ class AddButton extends React.Component {
                                 Create Pin
                             </li>
 						</Link>
-                        <Link to='/pin/create' className='link'>
+                        <Link to='/board/create' className='link'>
                             <li className='dropdown-item'>
                                 Create Board
                             </li>
