@@ -1,152 +1,267 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+
 import '../CSS/Pin.css';
+import BoardList from './BoardList';
+import OptionsList  from './OptionsList';
 import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
+import '../../../node_modules/bootstrap/dist/js/bootstrap';
+import Comment from './Comments';
+import Spinner from './Spinner';
+
+
 
 class Pin extends Component {
-	state = {
-		imgLink:
-			'https://i.pinimg.com/564x/c1/7c/61/c17c612afb745ea240ee602d7baae533.jpg',
-		websiteLink: 'https://www.behance.net',
-		websiteTitle: 'behance.net',
-		imgTitle: 'Concrete planter',
-		imgDesc:
-			'#design #architecture #furniture #designlove #interiordesign #interiors #architecturephotography #design #architecture #furniture #designlove #interiordesign #interiors #architecturephotography',
-		ownerProfile: 'https://www.pinterest.com/mohmosnaw',
-		ownerProfileImg:
-			'https://i.pinimg.com/564x/fa/48/a7/fa48a71531f8de2b40c6a10aad511691.jpg',
-		ownerFollowers: '10 Followers',
-		meImg: 'https://i.pinimg.com/564x/fa/48/a7/fa48a71531f8de2b40c6a10aad511691.jpg',
+	constructor(){
+        super();
+		this.state= {
+			staticPic: 'https://i.stack.imgur.com/d1JEp.png',
+
+			title:'',
+			description:'',
+			alt_description: '',
+			pin_picture:'',
+			destination_link:'',
+			pin_saved:false,
+
+			comment_content:'',
+
+			owner:'',
+			owner_username:'',
+			profilePic:'',
+			comments:[],
+			likes:'',
+			is_follow:true, 
+
+			pin_id:'',
+			loading:true,
+
+			userid : window.localStorage.getItem('user_id'),
+			username: window.localStorage.getItem('username'),
+			profile_picture :window.localStorage.getItem('profile_picture'),
+			token : window.localStorage.getItem('token') ,
+			
+			myheader : new Headers(),	
+			}
 	};
 
+	getUrl=(id)=>{
+		return `${process.env.REACT_APP_HOST_IP}/pin/${id}`
+	}
+
+	componentDidMount = async () => {	
+		// this.setState({	pin_id:this.props.match.params.id})
+		this.state.pin_id=this.props.match.params.id
+
+		this.state.myheader.append('Authorization', `Token ${this.state.token}`); 	
+
+		var requestOptions = {
+			method: 'GET',
+			headers: this.state.myheader, };
+
+		let response = await fetch(this.getUrl(this.state.pin_id),requestOptions);
+		let data = await response.json();
+
+		console.log(data)
+		console.log(this.state.myheader , this.state.token)
+
+		this.setState({...data}, () =>{ this.setState({loading: false});}	);		
+	};
+
+	savePin=async ()=>{
+		var requestOptions = {
+			method: 'PATCH',
+			headers: this.state.myheader,
+			body: {},
+			};
+		let savecase= this.state.pin_saved? 'unsave':'save'
+		console.log(savecase)
+		
+		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/${this.state.pin_id}/${savecase}`,requestOptions);
+		let data = await response.json();
+		if (response.status == 400) {
+			this.setState({wrongCredentials: true});
+		} else {
+		this.setState({pin_saved: !this.state.pin_saved})}
+		console.log(data)
+
+	}
+
+	follow=async()=>{
+		var formdata = new FormData();
+		formdata.append("user_id", this.state.owner);
+
+		var requestOptions = {
+		method: 'PATCH',
+		headers: this.state.myheader,
+		body: formdata,
+		};
+		let followcase= this.state.is_follow? 'unfollow':'follow'
+		console.log(followcase)
+		
+		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/profile/${this.state.owner}/${followcase}`,requestOptions);
+		let data = await response.json();
+		if (response.status == 400) {
+			this.setState({wrongCredentials: true});
+		} else {
+		this.setState({ is_follow: !this.state.is_follow})}
+		console.log(data)
+		// change the buttun to infollow
+	}
+
+	addComment=async()=>{
+		var formdata = new FormData();
+		formdata.append("content", this.state.comment_content);
+
+		var requestOptions = {
+		method: 'POST',
+		headers: this.state.myheader,
+		body: formdata,
+		};
+
+		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/${this.state.pin_id}/comment`,requestOptions);
+		let data = await response.json();
+		console.log(data)
+		let newComments=[...this.state.comments, {
+				"content": this.state.comment_content,
+				"owner": this.state.userid,
+				"owner_username": this.state.username,
+				"profilePic":this.state.profile_picture
+			}]
+		this.setState({ comments: newComments })
+		this.setState({comment_content:''});
+
+		// clear el comment content w refeetch or create new comment 
+	}
+
+	ChangeHandler=(e)=>{
+        this.setState({ [e.target.name]: e.target.value});
+    }
+
+
 	render() {
+		
 		return (
-			<div className='container pinContainer d-flex flex-lg-row flex-column my-5'>
+		<div>
+			{this.state.loading ?
+                      <Spinner /> :
+
+			<div className='container pinContainer d-flex flex-lg-row flex-column my-5 text-start'>	
 				<div className='imgContainer d-flex align-items-start justify-content-center'>
-					<img src={this.state.imgLink} alt=''></img>
+					<img src={this.state.pin_picture? this.state.pin_picture:this.state.staticPic} alt=''></img>
 				</div>
 				<div className='metaContainer d-flex flex-column p-3'>
 					<div className='optionsBar d-flex align-items-center align-content-center justify-content-between'>
 						<div className='d-flex align-items-center align-content-center flex-wrap'>
+							<OptionsList />
 							<div>
-								<button type='button' className='btn optionsLeft m-1'>
-									<i class='fas fa-ellipsis-h'></i>
-								</button>
-							</div>
-							<div>
-								<button type='button' className='btn optionsLeft m-1'>
-									<i class='fas fa-share-square'></i>
-								</button>
-							</div>
-							<div>
-								<button type='button' className='btn optionsLeft m-1'>
+								<button type='button' className='btn optionsLeft m-1 rounded-pill'>
 									<i class='fas fa-link'></i>
 								</button>
 							</div>
 						</div>
 						<div className='d-flex align-items-center align-content-center  flex-wrap'>
-							<div class='dropdown'>
-								<button
-									class='btn btn-secondary dropdown-toggle'
-									type='button'
-									id='dropdownMenuButton1'
-									data-bs-toggle='dropdown'
-									aria-expanded='false'>
-									Board
-								</button>
-								<ul
-									class='dropdown-menu'
-									aria-labelledby='dropdownMenuButton1'>
-									<li>
-										<a class='dropdown-item' href='#'>
-											Action
-										</a>
-									</li>
-									<li>
-										<a class='dropdown-item' href='#'>
-											Another action
-										</a>
-									</li>
-									<li>
-										<a class='dropdown-item' href='#'>
-											Something else here
-										</a>
-									</li>
-								</ul>
-							</div>
+							<BoardList />
 							<div>
 								<button
 									type='button'
-									className='btn optionsRight m-1 btn-danger'>
-									Save
+									className='btn optionsRight m-1 btn-danger rounded-pill' onClick={this.savePin}>
+									{this.state.pin_saved? 'Unsave':'Save'}
 								</button>
 							</div>
 						</div>
 					</div>
+
 					<div>
-						<a className='link' href={this.state.websiteLink}>
-							{this.state.websiteTitle}
+						<a className='link' href={this.state.destination_link}>
+							{this.state.destination_link}
 						</a>
 					</div>
+
 					<div>
-						<h2>{this.state.imgTitle}</h2>
+						<h2>{this.state.title}</h2>
 					</div>
+
 					<div>
-						<p>{this.state.imgDesc}</p>
+						<p>{this.state.description}</p>
 					</div>
+
 					<div className='owner d-flex align-items-center align-content-center justify-content-between'>
 						<div className='d-flex align-items-center align-content-center'>
 							<div>
-								<a href={this.state.ownerProfile}>
+								{/* replace with owner profile link with owner_id */}
+								<Link to={'/profile/'+this.state.owner}>  
 									<img
-										className='ownerImg m-2'
-										src={this.state.ownerProfileImg}
-										alt=''></img>
-								</a>
+										className='ownerImg rounded-circle m-2'
+										src={process.env.REACT_APP_HOST_IP +this.state.profilePic}
+										alt='profile pic'></img>
+								</Link>
 							</div>
 							<div>
 								<span>
-									<a className='link' href={this.state.ownerProfile}>
-										Mohammad Mousad
-									</a>
+									{/* replace with owner profile link with owner_id */}
+									<Link to={'/profile/'+this.state.owner}>  										
+										{this.state.owner_username}
+									</Link>
 								</span>
-								<br />
-								<span>{this.state.ownerFollowers}</span>
+								{/* <br />
+								<span>{this.state.ownerFollowers}</span> */}
 							</div>
 						</div>
 						<div className='d-flex align-items-center align-content-center'>
 							<div>
 								<button
 									type='button'
-									className='btn optionsRight m-1 btn-danger'>
-									Follow
+									className='btn optionsRight m-1 btn-danger rounded-pill' onClick={this.follow}>
+									{this.state. is_follow? 'UnFollow':'Follow'}
 								</button>
+								{/* <button
+									type='button'
+									className='btn optionsRight m-1 btn-danger rounded-pill'>
+									UnFollow
+								</button> */}
 							</div>
 						</div>
 					</div>
-					<div className='commentsContainer d-flex flex-column  align-content-start'>
-						{' '}
-						{/*align-items-start*/}
-						<div>
-							{' '}
-							<h3> Comments </h3>{' '}
-						</div>
+					<div className='commentsContainer d-flex flex-column  align-content-start mt-3'>
+						<h5> Comments </h5>{' '}
+							{this.state.comments.map((mycomments) => {
+							return (
+								 <Comment  {...mycomments} 
+								 key={mycomments.id}
+								 />
+								);
+							})}
+							
 						<div className='addComment d-flex align-items-center align-content-center'>
 							<div>
-								<img className='meImg m-3' src={this.state.meImg} alt=''></img>
+								<img
+									className='meImg  m-3'
+									src={this.state.profile_picture}
+									alt='my profile pic'></img>
 							</div>
-							<div className='flex-grow-1'>
+							<div className='flex-grow-1 me-3'>
 								<input
 									type='text'
 									class='form-control'
 									placeholder='Add Comment'
 									aria-label='Username'
 									aria-describedby='basic-addon1'
+									name='comment_content'
+									value={this.state.comment_content}
+									onChange={this.ChangeHandler}
 								/>
 							</div>
+							<button type='button' class='btn btn-danger rounded-pill'onClick={this.addComment}>
+								Add
+							</button>
 						</div>
 					</div>
+					
 				</div>
+				</div>}
 			</div>
+
 		);
 	}
 }

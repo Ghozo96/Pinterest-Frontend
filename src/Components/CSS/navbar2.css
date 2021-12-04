@@ -2,18 +2,18 @@
 
 #logo:hover{background-color: rgba(70, 70, 70, 0.096)}
 
-#logo{color:rgb(255, 0, 0) }
+#logo{color:#dc3545 }
 #bootstrap-overrides2 .nav-elem{border-radius: 20px; }   
 
-#logo-text{color: red; font-weight: bold;}
+#logo-text{color: #dc3545; font-weight: bold;}
 
 
 #navbar2 {
   box-shadow: 10px 2px 15px grey;
   }
 
-#login{color : white;font-weight: bold; background-color: red;border-radius: 30px;}
-#signup{color : black;font-weight: bold; background-color: rgba(128, 128, 128, 0.219);border-radius: 30px;}
+#login{color : white;font-weight: bold; background-color: #dc3545;}
+#signup{color : black;font-weight: bold; background-color: rgba(128, 128, 128, 0.219);}
 
 #signup:hover{background-color: rgba(128, 128, 128, 0.445)}
 #login:hover{background-color: rgb(201, 2, 2)}

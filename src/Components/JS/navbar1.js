@@ -1,51 +1,117 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import '../css/navbar.css';
+import '../CSS/Navbar.css';
+import SettingDD from './setting_dropdown';
 import Update from './update';
+import Spinner from './Spinner';
+
+class NavBar extends Component {
+	state = {
+		noSearchParam: false,
+		shouldThereBeSearch: true,
+	};
+
+	// componentDidMount = () => {
+	// 	let path = this.props.location.pathname;
+	// 	if (path.includes("profile")) {
+	// 		this.setState({shouldThereBeSearch: false});
+	// 	}
+	// 	console.log(path.includes("profile"));
+	// };
+
+	handleSubmit = (e) => {
+		e.preventDefault();
+		if (e.target.search.value == '') {
+			this.setState({noSearchParam: true});
+		} else {
+			this.setState({noSearchParam: false});
+			let param = e.target.search.value;
+			this.props.sendSearchParamUp(param);
+		}
+
+		e.target.search.value = '';
+	};
+
+	handleClick = (e) => {
+		this.props.NavigateToHomepage();
+	};
+
+	sendLogoutClickUp = () => {
+		this.props.logout();
+	};
+
+	render() {
+		let errorText = 'Please enter something to search for';
+		let normalText = 'Search';
+		let redBorder = 'border-danger';
+
+		return (
+			<div className='my-0' id='bootstrap-overrides'>
+				<nav className='d-flex p-1  navbar-fixed-top' id='navbar1'>
+					<Link
+						to='/pins'
+						className='mt-1 ms-4 nav-item nav-link  nav-elem'
+						id='logo'
+						onClick={this.handleClick}>
+						<i className='fab fa-pinterest fa-2x'></i>
+					</Link>
+
+					<Link
+						to='/pins'
+						className='nav-item nav-link  nav-elem me-1 mt-0 lead'
+						id='nav-elem1'
+						onClick={this.handleClick}>
+						Home
+					</Link>
 
 
-function NavBar()  {
-        
-  return (
-    // 
-    <div className="my-0" id="bootstrap-overrides">
-      
+					{this.state.shouldThereBeSearch && (
+						<div className='ms-0 me-2 mt-1 flex-grow-1 '>
+						<form
+							name='form'
+							onSubmit={this.handleSubmit}
+							className='input-group flex-nowrap'>
+							<input
+								type='text'
+								name='search'
+								className={`form-control ${
+									this.state.noSearchParam && redBorder
+								}`}
+								placeholder={
+									this.state.noSearchParam ? errorText : normalText
+								}
+								id='search-bar'
+							/>
+							<button
+								type='submit'
+								className='btn nav-elem ms-1'
+								id='search-btn'>
+								<i className='fas fa-search fa-lg'></i>
+							</button>
+						</form>
+					</div>
+					)}
+					
 
-    <nav className="d-flex p-1  navbar-fixed-top" id="navbar1">
-                
-              <Link to="#" className="mt-1 ms-4 nav-item nav-link  nav-elem" id="logo"><i className="fab fa-pinterest fa-2x"></i></Link>
-      
-            <Link to="#" className="nav-item nav-link  nav-elem me-1 mt-1" id="nav-elem1">Home</Link> 
-            
-      <div className="ms-0 me-2 mt-1 flex-grow-1 " >
-        <form className="input-group   flex-nowrap"> 
-          <input type="text" className="form-control" placeholder="Search" id="search-bar"></input>
-          <button type="button" className="btn nav-elem ms-1" id="search-btn"><i className="fas fa-search fa-lg"></i></button>
-        </form>
-      </div>
-            
-       <Update/>
-       
-        
+					<div className='d-flex ms-auto'>
+						<Update />
 
-        <Link to="#" className="mt-1 mx-2 nav-item nav-link nav-elem" id="nav-elem4"><i className="far fa-user-circle fa-lg"></i></Link>
-        
-        <div className="dropdown nav-item  mt-1">
-            <a href="#" className="nav-item nav-link  nav-elem " id="nav-elem5" data-bs-toggle="dropdown"><i className="fas fa-chevron-down fa-lg"></i></a>
-              <div className="dropdown-menu">
-               <a href="#" className="dropdown-item">Inbox</a>
-               <a href="#" className="dropdown-item">Sent</a>
-               <a href="#" className="dropdown-item">Drafts</a>
-        </div>
-       </div>
-      
-    
-    </nav>
- 
- 
-</div>
-// 
-  );
-};
+						<Link
+							to={'/profile/' + window.localStorage.getItem('user_id')}
+							className='mt-1 mx-2 nav-item nav-link nav-elem'
+							id='nav-elem4'>
+							<i className='far fa-user-circle fa-lg'></i>
+						</Link>
+
+						<SettingDD
+							username={window.localStorage.getItem('username')}
+							receiveLogoutClick={this.sendLogoutClickUp}
+						/>
+					</div>
+				</nav>
+			</div>
+		);
+	}
+}
 
 export default NavBar;

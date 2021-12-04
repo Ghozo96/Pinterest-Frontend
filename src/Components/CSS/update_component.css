@@ -1,0 +1,8 @@
+#notif_img{width: 40px;height: 40px;border-radius: 30%;}
+
+#notif-text{
+    width: 250px;
+    
+}
+
+#notif:hover{border-radius: 10px;}

@@ -1,11 +1,11 @@
 
 #bootstrap-overrides .nav-elem:hover{background-color: rgba(70, 70, 70, 0.096) }
 
-#logo{color:rgb(255, 0, 0) }
-#nav-elem1{font-weight: bold; }
+#logo{color:rgb(230 0 35) }
+#nav-elem1{font-weight: bold;}
 
 
-#bootstrap-overrides .nav-elem{border-radius: 20px;color:rgb(255, 0, 0)  }   
+#bootstrap-overrides .nav-elem{border-radius: 20px;color:#dc3545  }   
 
 #search-btn{color:rgb(255, 0, 0);
     border-radius: 20px;
