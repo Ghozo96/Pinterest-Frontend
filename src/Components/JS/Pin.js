@@ -46,6 +46,7 @@ class Pin extends Component {
 	}
 
 	componentDidMount = async () => {	
+		console.log('helllo')
 		this.state.myheader.append('Authorization', `Token ${this.state.token}`); 	
 
 		var requestOptions = {

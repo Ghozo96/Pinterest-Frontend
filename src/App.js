@@ -2,8 +2,8 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {
 	BrowserRouter as Router,
 	Route,
-	Routes,
-	Navigate,
+	 Switch,
+	Redirect,
 } from 'react-router-dom';
 import {} from 'react-router-dom';
 import Register from './Components/JS/Register';
@@ -126,10 +126,10 @@ class App extends Component {
 		return (
 			<Router>
 				<div>
-					<Routes>
+					<Switch>
 						<Route
-							path='/'
-							element={
+							exact path='/'
+							render={(props)=>(
 								<Fragment>
 									<NavBar2 />
 									{this.state.loading ? (
@@ -144,14 +144,14 @@ class App extends Component {
 										</div>
 									)}
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/register'
-							element={
+							exact path='/register'
+							render={(props)=>(
 								<Fragment>
 									{this.state.isRegistered ? (
-										<Navigate to='/login' />
+										< Redirect to='/login' />
 									) : (
 										<div>
 											<NavBar2 />
@@ -163,14 +163,14 @@ class App extends Component {
 										</div>
 									)}
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/login'
-							element={
+							exact path='/login'
+							render={(props)=>(
 								<Fragment>
 									{this.state.isLoggedIn ? (
-										<Navigate to='/pins' />
+										< Redirect to='/pins' />
 									) : (
 										<div>
 											<NavBar2 />
@@ -182,11 +182,11 @@ class App extends Component {
 										</div>
 									)}
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/profile'
-							element={
+							exact path='/profile'
+							render={(props)=>(
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -195,11 +195,11 @@ class App extends Component {
 									/>
 									<ProfilePage user_id={this.state.user_id} username={this.state.username}/>
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/profile/edit'
-							element={
+							exact path='/profile/edit'
+							render={(props)=>(
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -208,11 +208,11 @@ class App extends Component {
 									/>
 									<SettingPage username={this.state.username}/>
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/pins'
-							element={
+							exact path='/pins'
+							render={(props)=>(
 								<Fragment>
 									<NavBar
 										logout={this.logout}
@@ -233,33 +233,29 @@ class App extends Component {
 										</div>
 									)}
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/pin/details/:id'
+							exact path='/pin/details'
+							render={(props)=>{
+								<Pin {...props}/>
+							}}
+						/>
 
-							element={
-								
-									<Pin />
-								
-							}
-						/>
 						<Route
-							path='/pin'
-							element={
-								<Fragment>
+							exact path='/pin'
+							render={(props)=>(							
+							<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
-										user_id={this.state.user_id}
-										username={this.state.username}
 									/>
 									<Pin />
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/pin/create'
-							element={
+							exact path='/pin/create'
+							render={(props)=>(							
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -268,11 +264,11 @@ class App extends Component {
 									/>
 									<CreatePin />
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/board/create'
-							element={
+							exact path='/board/create'
+							render={(props)=>(							
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -281,11 +277,11 @@ class App extends Component {
 									/>
 									<CreateBoard />
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/board/edit'
-							element={
+							exact path='/board/edit'
+							render={(props)=>(							
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -294,45 +290,45 @@ class App extends Component {
 									/>
 									<EditBoard />
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/boardpage'
-							element={
+							exact path='/boardpage'
+							render={(props)=>(							
 								<Fragment>
 									<NavBar />
 									<BoardPage />
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/board'
-							element={
+							exact path='/board'
+							render={(props)=>(							
 								<Fragment>
 									<NavBar />
 									<Board />
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/boards'
-							element={
+							exact path='/boards'
+							render={(props)=>(							
 								<Fragment>
 									<NavBar />
 									<Boards />
 								</Fragment>
-							}
+							)}
 						/>
 						<Route
-							path='/spinner'
-							element={
+							exact exact path='/spinner'
+							render={(props)=>(							
 								<Fragment>
 									<NavBar />
 									<Spinner />
 								</Fragment>
-							}
+							)}
 						/>
-					</Routes>
+					</ Switch>
 				</div>
 			</Router>
 		);
