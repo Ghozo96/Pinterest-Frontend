@@ -40,8 +40,6 @@ class Update extends Component {
 		let response = await fetch(this.getUrl(),requestOptions);
 		let data = await response.json();
 
-		console.log(data)
-
 		this.setState({...data}, () =>{ this.setState({loading: false});}	);		
 	};
 

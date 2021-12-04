@@ -223,12 +223,17 @@ class ProfilePage extends Component {
 						(!this.state.loading ? (
 							this.state.boardClickedPins.map((pin) => {
 								return (
+									<div>
+										{/* <button>x</button> */}
 									<SmallPin
 										key={pin.id}
-										// title={pin.title}
+										title={pin.title}
 										pinImage={pin.pin_picture}
 										pin_id={pin.id}
 									/>
+									</div>
+
+									
 								);
 							})
 						) : (

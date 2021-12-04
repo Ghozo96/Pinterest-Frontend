@@ -72,7 +72,11 @@ class CreatePin extends Component {
 			let data = await response.json();
 
 			console.log(data);
+            if (response.status == 400) {
+                console.log('error' )  ; 
+             } else {
 			this.setState({submited: true});
+        }
 			// here we will redirect to the home page
 		}
 	};

@@ -45,8 +45,12 @@ class CreateBoard extends React.Component {
         let response = await fetch(this.getUrl(), requestOptions);
         let data = await response.json();
         
-        console.log(data)
-        this.setState({submited:true})
+        console.log(data);
+        if (response.status == 400) {
+            console.log('error' )  ; 
+         } else {
+        this.setState({submited: true});
+    }
 		// here we will redirect to the home page
 
 	}
@@ -79,6 +83,11 @@ class CreateBoard extends React.Component {
                     So only you and collaborators can see it.
                 </p>
             </div>
+            {this.state.submited && (
+						<div className='lead fs-6 mb-3 text-success text-center'>
+							your Board has been created successfully
+						</div>
+			)}
             <div className="d-flex justify-content-end">
                 <button className="btn btn-danger rounded-pill" type="submit">Create</button>
             </div>

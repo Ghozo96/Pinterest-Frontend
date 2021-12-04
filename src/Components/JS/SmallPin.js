@@ -7,6 +7,10 @@ class SmallPin extends Component {
 	//     console.log("test")
 	//     window.location = "http://www.google.com/"
 	// }
+	BoardSubmittionHandler=(msg)=>{
+        this.setState({ board_msg: msg});
+		console.log(msg)
+	}
 
 	render() {
 		return (
@@ -21,7 +25,7 @@ class SmallPin extends Component {
 						/>
 					</Link>
                     <div className='hoverPinOptions'>
-						<BoardList />
+						<BoardList  my_boards={this.props.my_boards} pin_id={this.props.pin_id} />
 						<button className='btn btn-danger m-2 rounded-pill saveButton'>
 							Save
 						</button>
