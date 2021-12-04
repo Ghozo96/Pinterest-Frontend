@@ -5,6 +5,8 @@ import OptionsList  from './OptionsList';
 import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
 import '../../../node_modules/bootstrap/dist/js/bootstrap';
 import Comment from './Comments';
+import Spinner from './Spinner';
+
 
 
 class Pin extends Component {
@@ -29,8 +31,8 @@ class Pin extends Component {
 			likes:'',
 			is_follow:true, 
 
-			pin_id:'46',
-
+			pin_id:'',
+			loading:true,
 
 			userid : window.localStorage.getItem('user_id'),
 			username: window.localStorage.getItem('username'),
@@ -46,7 +48,9 @@ class Pin extends Component {
 	}
 
 	componentDidMount = async () => {	
-		console.log('helllo')
+		// this.setState({	pin_id:this.props.match.params.id})
+		this.state.pin_id=this.props.match.params.id
+
 		this.state.myheader.append('Authorization', `Token ${this.state.token}`); 	
 
 		var requestOptions = {
@@ -136,7 +140,11 @@ class Pin extends Component {
 	render() {
 		
 		return (
-			<div className='container pinContainer d-flex flex-lg-row flex-column my-5 text-start'>
+		<div>
+			{this.state.loading ?
+                      <Spinner /> :
+
+			<div className='container pinContainer d-flex flex-lg-row flex-column my-5 text-start'>	
 				<div className='imgContainer d-flex align-items-start justify-content-center'>
 					<img src={this.state.pin_picture? this.state.pin_picture:this.state.staticPic} alt=''></img>
 				</div>
@@ -246,10 +254,12 @@ class Pin extends Component {
 								Add
 							</button>
 						</div>
-			</div>
+					</div>
 					
 				</div>
+				</div>}
 			</div>
+
 		);
 	}
 }

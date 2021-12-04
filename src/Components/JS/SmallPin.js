@@ -12,7 +12,7 @@ class SmallPin extends Component {
 		return (
 			<div className='smallPinContainer d-flex flex-column flex-wrap m-3'>
 				<div className='card border-0' style={{width: '22rem'}}>
-					<Link to ='/pin'>
+					<Link to ={'/pin/'+ this.props.pin_id}>
 						<img
 							src={this.props.pinImage}
 							className='card-img-top'

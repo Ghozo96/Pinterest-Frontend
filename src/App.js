@@ -238,18 +238,18 @@ class App extends Component {
 						<Route
 							exact path='/pin/details'
 							render={(props)=>{
-								<Pin {...props}/>
+								<Pin />
 							}}
 						/>
 
 						<Route
-							exact path='/pin'
+							exact path='/pin/:id'
 							render={(props)=>(							
 							<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
 									/>
-									<Pin />
+									<Pin {...props}/>
 								</Fragment>
 							)}
 						/>

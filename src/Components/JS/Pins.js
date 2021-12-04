@@ -38,6 +38,7 @@ class Pins extends React.Component {
 								key={pin.id}
 								title={pin.title}
 								pinImage={pin.pin_picture}
+								pin_id={pin.id}
 							/>
 						);
 					})}
