@@ -2,7 +2,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {
 	BrowserRouter as Router,
 	Route,
-	 Switch,
+	Switch,
 	Redirect,
 } from 'react-router-dom';
 import {} from 'react-router-dom';
@@ -190,10 +190,8 @@ class App extends Component {
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
-										user_id={this.state.user_id}
-										username={this.state.username}
 									/>
-									<ProfilePage user_id={this.state.user_id} username={this.state.username}/>
+									<ProfilePage />
 								</Fragment>
 							)}
 						/>
@@ -203,8 +201,6 @@ class App extends Component {
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
-										user_id={this.state.user_id}
-										username={this.state.username}
 									/>
 									<SettingPage username={this.state.username}/>
 								</Fragment>
@@ -218,8 +214,6 @@ class App extends Component {
 										logout={this.logout}
 										sendSearchParamUp={this.fetchSearchedPins}
 										NavigateToHomepage={this.NavigateToHomepage}
-										user_id={this.state.user_id}
-										username={this.state.username}
 									/>
 									{this.state.loading ? (
 										<Spinner />
@@ -259,8 +253,6 @@ class App extends Component {
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
-										user_id={this.state.user_id}
-										username={this.state.username}
 									/>
 									<CreatePin />
 								</Fragment>
@@ -272,8 +264,6 @@ class App extends Component {
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
-										user_id={this.state.user_id}
-										username={this.state.username}
 									/>
 									<CreateBoard />
 								</Fragment>
@@ -285,8 +275,6 @@ class App extends Component {
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
-										user_id={this.state.user_id}
-										username={this.state.username}
 									/>
 									<EditBoard />
 								</Fragment>

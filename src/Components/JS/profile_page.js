@@ -15,7 +15,7 @@ class ProfilePage extends Component {
 
 	componentDidMount = async () => {
 		let response = await fetch(
-			`${process.env.REACT_APP_HOST_IP}/profile/${this.props.user_id}`
+			`${process.env.REACT_APP_HOST_IP}/profile/${window.localStorage.getItem('user_id')}`
 		);
 		let data = await response.json();
 		this.setState({boards: data.boards, email: data.username});
@@ -33,12 +33,12 @@ class ProfilePage extends Component {
 							className='rounded-circle mt-4'
 							id='profile_img'
 							style={{width: '120px', height: '120px'}}
-							src='https://i.pinimg.com/736x/b8/ce/d9/b8ced96199e56d254419afc00347769c.jpg'
+							src={window.localStorage.getItem('profile_picture')}
 							alt='your image'></img>
 					</div>
 
 					<div className='lead fs-2 mt-0 fw-bold '>
-						
+						{}
 					</div>
 					<div className='lead fs-6 mt-0 fw-normal '>
 						{window.localStorage.getItem("username")}
