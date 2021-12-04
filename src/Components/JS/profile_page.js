@@ -10,15 +10,18 @@ import Board from './Board';
 class ProfilePage extends Component {
 	state = {
 		boards: [],
-		email: ''
+		email: '',
+		user_id:'',
 	};
 
 	componentDidMount = async () => {
+		this.state.user_id=this.props.match.params.id
+
 		let response = await fetch(
-			`${process.env.REACT_APP_HOST_IP}/profile/${this.props.user_id}`
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}`
 		);
 		let data = await response.json();
-		this.setState({boards: data.boards, email: data.username});
+		this.setState({...data});
 		console.log("component did mount", this.state.boards)
 	};
 
@@ -33,7 +36,7 @@ class ProfilePage extends Component {
 							className='rounded-circle mt-4'
 							id='profile_img'
 							style={{width: '120px', height: '120px'}}
-							src='https://i.pinimg.com/736x/b8/ce/d9/b8ced96199e56d254419afc00347769c.jpg'
+							src={this.state.profile_picture}
 							alt='your image'></img>
 					</div>
 
@@ -41,7 +44,7 @@ class ProfilePage extends Component {
 						
 					</div>
 					<div className='lead fs-6 mt-0 fw-normal '>
-						{window.localStorage.getItem("username")}
+						{this.state.username}
 					</div>
 
 					<div className='dropdown mt-2'>

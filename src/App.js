@@ -185,6 +185,17 @@ class App extends Component {
 							)}
 						/>
 						<Route
+						exact path='/profile/:id'
+						render={(props)=>(
+							<Fragment>
+								<NavBar
+									NavigateToHomepage={this.NavigateToHomepage}
+								/>
+								<ProfilePage {...props}/>
+							</Fragment>
+						)}
+						/>
+						<Route
 							exact path='/profile'
 							render={(props)=>(
 								<Fragment>
@@ -235,13 +246,7 @@ class App extends Component {
 								</Fragment>
 							)}
 						/>
-						<Route
-							exact path='/pin/details'
-							render={(props)=>{
-								<Pin />
-							}}
-						/>
-
+					
 						<Route
 							exact path='/pin/:id'
 							render={(props)=>(							
