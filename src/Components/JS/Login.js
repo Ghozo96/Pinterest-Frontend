@@ -19,6 +19,7 @@ class Login extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
+		console.log(e);
 
 		if (this.isFormFieldEmpty(e)) {
 			this.setState({isEmpty: true});
@@ -101,17 +102,17 @@ class Login extends Component {
 		return regex.test(email);
 	};
 
-	renderElement = () => {
-		if (!this.state.wrongCredentials) {
-			return (
-				<div className='mt-5'>
-					<div>Email: {this.state.email}</div>
-					<div>Password: {this.state.password}</div>
-					<div>Token: {this.state.token}</div>
-				</div>
-			);
-		}
-	};
+	// renderElement = () => {
+	// 	if (!this.state.wrongCredentials) {
+	// 		return (
+	// 			<div className='mt-5'>
+	// 				<div>Email: {this.state.email}</div>
+	// 				<div>Password: {this.state.password}</div>
+	// 				<div>Token: {this.state.token}</div>
+	// 			</div>
+	// 		);
+	// 	}
+	// };
 
 	render() {
 		return (
@@ -180,7 +181,7 @@ class Login extends Component {
 								</a>
 							</div>
 						</form>
-						{this.renderElement()}
+						{/* {this.renderElement()} */}
 					</div>
 				</div>
 			</Fragment>

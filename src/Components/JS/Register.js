@@ -256,12 +256,12 @@ class Register extends Component {
 								</a>
 							</div>
 						</form>
-						<div className='mt-5'>
+						{/* <div className='mt-5'>
 							<div>Email: {this.state.email}</div>
 							<div>Password: {this.state.password}</div>
 							<div>Confirmed Password: {this.state.password2}</div>
 							<div>Age: {this.state.age}</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</Fragment>

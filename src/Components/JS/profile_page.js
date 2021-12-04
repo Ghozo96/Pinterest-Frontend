@@ -6,25 +6,67 @@ import UpdateComponent from './update_component';
 import FollowingComponent from './user_following';
 import '../CSS/profile_page.css';
 import Board from './Board';
+import Spinner from './Spinner';
 
 class ProfilePage extends Component {
 	state = {
 		boards: [],
-		email: ''
+		email: '',
+		user_id: '',
+		boardClicked: false,
+		boardClickedPins: [],
+		boardClickedName: '',
+		followers: [],
+		following: [],
+		loading: false,
 	};
 
 	componentDidMount = async () => {
+		this.state.user_id = this.props.match.params.id;
+
 		let response = await fetch(
-			`${process.env.REACT_APP_HOST_IP}/profile/${window.localStorage.getItem('user_id')}`
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}`
 		);
 		let data = await response.json();
-		this.setState({boards: data.boards, email: data.username});
-		console.log("component did mount", this.state.boards)
+		this.setState({...data});
 	};
 
+	getFollowers = async () => {
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}/followers`
+		);
+		let data = await response.json();
+		this.setState({followers: data.results});
+		console.log(this.state.followers);
+	};
+
+	getFollowing = async () => {
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}/followings`
+		);
+		let data = await response.json();
+		this.setState({following: data.results});
+		console.log(this.state.following);
+	};
+
+	showBoardPins = async (board_id, name) => {
+		this.setState({
+			boardClicked: true,
+			loading: true,
+			boardClickedName: name,
+		});
+
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/board/${board_id}`
+		);
+		let data = await response.json();
+		this.setState({boardClickedPins: data.savedPins}, () =>
+			this.setState({loading: false})
+		);
+	};
 
 	render() {
-		console.log('parent render', this.state.boards)
+		// console.log(this.state.boards);
 		return (
 			<Fragment>
 				<div className='d-flex flex-column align-items-center'>
@@ -33,49 +75,78 @@ class ProfilePage extends Component {
 							className='rounded-circle mt-4'
 							id='profile_img'
 							style={{width: '120px', height: '120px'}}
-							src={window.localStorage.getItem('profile_picture')}
+							src={this.state.profile_picture}
 							alt='your image'></img>
 					</div>
 
-					<div className='lead fs-2 mt-0 fw-bold '>
-						{}
-					</div>
+					<div className='lead fs-2 mt-0 fw-bold '>{}</div>
 					<div className='lead fs-6 mt-0 fw-normal '>
-						{window.localStorage.getItem("username")}
+						{this.state.username}
 					</div>
 
-					<div className='dropdown mt-2'>
-						<Link
-							to=''
-							className='link-dark text-decoration-none fw-bold'
-							type='button'
-							id='dropdownMenuButton1'
-							data-bs-toggle='dropdown'
-							aria-expanded='false'>
-							Following
-						</Link>
-						<ul
-							className='dropdown-menu '
-							aria-labelledby='dropdownMenuButton1'
-							id='dd-nav-setting'
-							style={{maxHeight: '250px'}}>
-							<li>
-								<h6 className='dropdown-header ms-2'>Following</h6>
-							</li>
-
-							<FollowingComponent />
-							<FollowingComponent />
-							<FollowingComponent />
-							<FollowingComponent />
-							<FollowingComponent />
-							<FollowingComponent />
-							<FollowingComponent />
-						</ul>
+					<div className='d-flex'>
+						<div className='dropdown mt-2 me-3'>
+							<Link
+								to=''
+								className='link-dark text-decoration-none fw-bold'
+								type='button'
+								id='dropdownMenuButton1'
+								data-bs-toggle='dropdown'
+								aria-expanded='false'
+								onClick={this.getFollowers}>
+								Followers: {this.state.follower_count}
+							</Link>
+							<ul
+								className='dropdown-menu'
+								aria-labelledby='dropdownMenuButton1'
+								id='dd-nav-setting'
+								style={{maxHeight: '250px'}}>
+								<li>
+									<h6 className='dropdown-header'>Followers</h6>
+								</li>
+								{this.state.follower_count > 0 ? (
+									this.state.followers.map((follower) => {
+										return <FollowingComponent {...follower} />;
+									})
+								) : (
+									<p className='lead fs-6 text-center'>Ya3eni you have no followers</p>
+								)}
+							</ul>
+						</div>
+						<div className='dropdown mt-2 ms-3'>
+							<Link
+								to=''
+								className='link-dark text-decoration-none fw-bold'
+								type='button'
+								id='dropdownMenuButton1'
+								data-bs-toggle='dropdown'
+								aria-expanded='false'
+								onClick={this.getFollowing}>
+								Following: {this.state.following_count}
+							</Link>
+							<ul
+								className='dropdown-menu'
+								aria-labelledby='dropdownMenuButton1'
+								id='dd-nav-setting'
+								style={{maxHeight: '250px'}}>
+								<li>
+									<h6 className='dropdown-header'>Following</h6>
+								</li>
+								{this.state.following_count > 0 ? (
+									this.state.following.map((following) => {
+										return <FollowingComponent {...following} />;
+									})
+								) : (
+									<p className='lead fs-6 text-center'>You don't follow anyone</p>
+								)}
+							</ul>
+						</div>
 					</div>
-
 					<div>
 						<Link
-							to='/profile/edit'
+							to={`/profile/${window.localStorage.getItem(
+								'user_id'
+							)}/edit`}
 							class='btn btn-lg rounded-pill mt-2'
 							id='edit-profile'>
 							Edit Profile
@@ -120,10 +191,49 @@ class ProfilePage extends Component {
 						</ul>
 					</div>
 				</div>
-				<div className='d-flex flex-wrap justify-content-evenly mt-5'>
-					{this.state.boards.map((board) => {
-						return <Board name={board.name} pinPic1={board.savedPins[0].pin_picture} pinPic2={board.savedPins[1].pin_picture} pinPic3={board.savedPins[2].pin_picture}/>
-					})}
+				<p className='lead fs-2 fw-normal text-center mt-5'>My Boards</p>
+				<div className='d-flex flex-wrap justify-content-evenly mt-4'>
+					{this.state.boards.length != 0 ? (
+						this.state.boards.map((board) => {
+							return (
+								<Board
+									board_id={board.id}
+									name={board.name}
+									{...board}
+									showBoardPins={this.showBoardPins}
+								/>
+							);
+						})
+					) : (
+						<div>
+							<p className='lead'>No boards created yet.</p>
+						</div>
+					)}
+				</div>
+				{this.state.boardClickedPins.length != 0 && (
+					<p className='lead fs-2 fw-normal text-center mt-5'>
+						Pins in{' '}
+						<span className='text-danger fw-bold'>
+							{this.state.boardClickedName}
+						</span>
+					</p>
+				)}
+				<div className='d-flex flex-wrap justify-content-evenly mt-3'>
+					{this.state.boardClickedPins.length != 0 &&
+						(!this.state.loading ? (
+							this.state.boardClickedPins.map((pin) => {
+								return (
+									<SmallPin
+										key={pin.id}
+										// title={pin.title}
+										pinImage={pin.pin_picture}
+										pin_id={pin.id}
+									/>
+								);
+							})
+						) : (
+							<Spinner />
+						))}
 				</div>
 			</Fragment>
 		);

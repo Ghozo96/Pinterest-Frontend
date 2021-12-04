@@ -17,16 +17,16 @@ class UpdateComponent extends Component {
     };
     componentDidMount =()=>{
         if (this.props.type=='follow'){
-            this.setState({ link_to: '/profile/' ,
-            notification_msg:' Followed you', })
+            this.setState({ link_to: '/profile/'+this.props.notifier,
+            notification_msg:' followed you', })
 
         }else if(this.props.type=='comment' ){
-            this.setState({ link_to: '', 
+            this.setState({ link_to:'/pin/'+this.props.pin, 
             notification_msg:' commented on your pin', })
 
         }else if(this.props.type=='like'){
-            this.setState({ link_to: '' ,
-            notification_msg:' Liked your pin', })
+            this.setState({ link_to: '/pin/'+this.props.pin,
+            notification_msg:' liked your pin', })
         }
     }
     render() {   
@@ -40,7 +40,7 @@ class UpdateComponent extends Component {
                     <div className="align-self-center ms-2 mt-3" id="notif-text" >
                         <p className=" text-wrap text-start fs-6">
                             {this.props.notifier_username} {this.state.notification_msg} 
-                            {this.props.type!='follow'? this.props.pin_title:''}
+                            &nbsp;{this.props.type!='follow'? this.props.pin_title:''}
                             {/* Hi I'm a notification to help you get the latest news */}
                             </p> </div>
                     </div>

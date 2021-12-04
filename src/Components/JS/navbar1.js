@@ -6,12 +6,30 @@ import Update from './update';
 import Spinner from './Spinner';
 
 class NavBar extends Component {
+	state = {
+		noSearchParam: false,
+		shouldThereBeSearch: true,
+	};
+
+	// componentDidMount = () => {
+	// 	let path = this.props.location.pathname;
+	// 	if (path.includes("profile")) {
+	// 		this.setState({shouldThereBeSearch: false});
+	// 	}
+	// 	console.log(path.includes("profile"));
+	// };
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-		let param = e.target.search.value;
-		this.props.sendSearchParamUp(param);
-		e.target.search.value= '';
+		if (e.target.search.value == '') {
+			this.setState({noSearchParam: true});
+		} else {
+			this.setState({noSearchParam: false});
+			let param = e.target.search.value;
+			this.props.sendSearchParamUp(param);
+		}
+
+		e.target.search.value = '';
 	};
 
 	handleClick = (e) => {
@@ -20,10 +38,13 @@ class NavBar extends Component {
 
 	sendLogoutClickUp = () => {
 		this.props.logout();
-	}
-
+	};
 
 	render() {
+		let errorText = 'Please enter something to search for';
+		let normalText = 'Search';
+		let redBorder = 'border-danger';
+
 		return (
 			<div className='my-0' id='bootstrap-overrides'>
 				<nav className='d-flex p-1  navbar-fixed-top' id='navbar1'>
@@ -43,7 +64,9 @@ class NavBar extends Component {
 						Home
 					</Link>
 
-					<div className='ms-0 me-2 mt-1 flex-grow-1 '>
+
+					{this.state.shouldThereBeSearch && (
+						<div className='ms-0 me-2 mt-1 flex-grow-1 '>
 						<form
 							name='form'
 							onSubmit={this.handleSubmit}
@@ -51,8 +74,12 @@ class NavBar extends Component {
 							<input
 								type='text'
 								name='search'
-								className='form-control'
-								placeholder='Search'
+								className={`form-control ${
+									this.state.noSearchParam && redBorder
+								}`}
+								placeholder={
+									this.state.noSearchParam ? errorText : normalText
+								}
 								id='search-bar'
 							/>
 							<button
@@ -63,17 +90,24 @@ class NavBar extends Component {
 							</button>
 						</form>
 					</div>
+					)}
+					
 
-					<Update />
+					<div className='d-flex ms-auto'>
+						<Update />
 
-					<Link
-						to='/profile'
-						className='mt-1 mx-2 nav-item nav-link nav-elem'
-						id='nav-elem4'>
-						<i className='far fa-user-circle fa-lg'></i>
-					</Link>
+						<Link
+							to={'/profile/' + window.localStorage.getItem('user_id')}
+							className='mt-1 mx-2 nav-item nav-link nav-elem'
+							id='nav-elem4'>
+							<i className='far fa-user-circle fa-lg'></i>
+						</Link>
 
-					<SettingDD username={window.localStorage.getItem("username")} receiveLogoutClick={this.sendLogoutClickUp}/>
+						<SettingDD
+							username={window.localStorage.getItem('username')}
+							receiveLogoutClick={this.sendLogoutClickUp}
+						/>
+					</div>
 				</nav>
 			</div>
 		);

@@ -69,10 +69,7 @@ class Update extends Component {
                             })}
                       </div>
                   }
-{/* 
-                  <UpdateComponent/>
-                  <UpdateComponent/>
-                  <UpdateComponent/> */}
+
 
               </ul>
            </div>

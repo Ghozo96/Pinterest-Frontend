@@ -10,6 +10,7 @@ import Register from './Components/JS/Register';
 import Login from './Components/JS/Login';
 import Pin from './Components/JS/Pin';
 import NavBar from './Components/JS/navbar1';
+import NavBarPP from './Components/JS/NavbarPP.js';
 import Pins from './Components/JS/Pins';
 import CreatePin from './Components/JS/CreatePin';
 import CreateBoard from './Components/JS/CreateBoard';
@@ -101,7 +102,7 @@ class App extends Component {
 			token: '',
 			user_id: 0,
 			username: '',
-			isLoggedIn: false
+			isLoggedIn: false,
 		});
 		window.localStorage.clear();
 	};
@@ -112,9 +113,8 @@ class App extends Component {
 		let data = await response.json();
 		this.setState({pinsData: data.results}, () =>
 			this.setState({loading: false})
-		)
+		);
 	};
-
 
 	render() {
 		let noResultsText = (
@@ -128,8 +128,9 @@ class App extends Component {
 				<div>
 					<Switch>
 						<Route
-							exact path='/'
-							render={(props)=>(
+							exact
+							path='/'
+							render={(props) => (
 								<Fragment>
 									<NavBar2 />
 									{this.state.loading ? (
@@ -147,11 +148,12 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/register'
-							render={(props)=>(
+							exact
+							path='/register'
+							render={(props) => (
 								<Fragment>
 									{this.state.isRegistered ? (
-										< Redirect to='/login' />
+										<Redirect to='/login' />
 									) : (
 										<div>
 											<NavBar2 />
@@ -166,11 +168,12 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/login'
-							render={(props)=>(
+							exact
+							path='/login'
+							render={(props) => (
 								<Fragment>
 									{this.state.isLoggedIn ? (
-										< Redirect to='/pins' />
+										<Redirect to='/pins' />
 									) : (
 										<div>
 											<NavBar2 />
@@ -185,8 +188,23 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/profile'
-							render={(props)=>(
+							exact
+							path='/profile/:id'
+							render={(props) => (
+								<Fragment>
+									<NavBarPP
+										{...props}
+										logout={this.logout}
+										NavigateToHomepage={this.NavigateToHomepage}
+									/>
+									<ProfilePage {...props} />
+								</Fragment>
+							)}
+						/>
+						{/* <Route
+							exact
+							path='/profile'
+							render={(props) => (
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -194,23 +212,28 @@ class App extends Component {
 									<ProfilePage />
 								</Fragment>
 							)}
-						/>
+						/> */}
 						<Route
-							exact path='/profile/edit'
-							render={(props)=>(
+							exact
+							path='/profile/:id/edit'
+							render={(props) => (
 								<Fragment>
-									<NavBar
+									<NavBarPP
+										{...props}
+										logout={this.logout}
 										NavigateToHomepage={this.NavigateToHomepage}
 									/>
-									<SettingPage username={this.state.username}/>
+									<SettingPage username={this.state.username} />
 								</Fragment>
 							)}
 						/>
 						<Route
-							exact path='/pins'
-							render={(props)=>(
+							exact
+							path='/pins'
+							render={(props) => (
 								<Fragment>
 									<NavBar
+										{...props}
 										logout={this.logout}
 										sendSearchParamUp={this.fetchSearchedPins}
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -230,28 +253,12 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/pin/details'
-							render={(props)=>{
-								<Pin />
-							}}
-						/>
-
-						<Route
-							exact path='/pin/:id'
-							render={(props)=>(							
-							<Fragment>
-									<NavBar
-										NavigateToHomepage={this.NavigateToHomepage}
-									/>
-									<Pin {...props}/>
-								</Fragment>
-							)}
-						/>
-						<Route
-							exact path='/pin/create'
-							render={(props)=>(							
+							exact
+							path='/pin/create'
+							render={(props) => (
 								<Fragment>
 									<NavBar
+										{...props}
 										NavigateToHomepage={this.NavigateToHomepage}
 									/>
 									<CreatePin />
@@ -259,10 +266,26 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/board/create'
-							render={(props)=>(							
+							exact
+							path='/pin/:id'
+							render={(props) => (
 								<Fragment>
 									<NavBar
+										{...props}
+										logout={this.logout}
+										NavigateToHomepage={this.NavigateToHomepage}
+									/>
+									<Pin {...props} />
+								</Fragment>
+							)}
+						/>
+						<Route
+							exact
+							path='/board/create'
+							render={(props) => (
+								<Fragment>
+									<NavBar
+										{...props}
 										NavigateToHomepage={this.NavigateToHomepage}
 									/>
 									<CreateBoard />
@@ -270,8 +293,9 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/board/edit'
-							render={(props)=>(							
+							exact
+							path='/board/edit'
+							render={(props) => (
 								<Fragment>
 									<NavBar
 										NavigateToHomepage={this.NavigateToHomepage}
@@ -281,8 +305,9 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/boardpage'
-							render={(props)=>(							
+							exact
+							path='/boardpage'
+							render={(props) => (
 								<Fragment>
 									<NavBar />
 									<BoardPage />
@@ -290,8 +315,9 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/board'
-							render={(props)=>(							
+							exact
+							path='/board'
+							render={(props) => (
 								<Fragment>
 									<NavBar />
 									<Board />
@@ -299,8 +325,9 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact path='/boards'
-							render={(props)=>(							
+							exact
+							path='/boards'
+							render={(props) => (
 								<Fragment>
 									<NavBar />
 									<Boards />
@@ -308,15 +335,17 @@ class App extends Component {
 							)}
 						/>
 						<Route
-							exact exact path='/spinner'
-							render={(props)=>(							
+							exact
+							exact
+							path='/spinner'
+							render={(props) => (
 								<Fragment>
 									<NavBar />
 									<Spinner />
 								</Fragment>
 							)}
 						/>
-					</ Switch>
+					</Switch>
 				</div>
 			</Router>
 		);

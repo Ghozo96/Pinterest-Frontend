@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+
 import '../CSS/Pin.css';
 import BoardList from './BoardList';
 import OptionsList  from './OptionsList';
@@ -94,7 +96,7 @@ class Pin extends Component {
 		headers: this.state.myheader,
 		body: formdata,
 		};
-		let followcase= this.state. is_follow? 'unfollow':'follow'
+		let followcase= this.state.is_follow? 'unfollow':'follow'
 		console.log(followcase)
 		
 		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/profile/${this.state.owner}/${followcase}`,requestOptions);
@@ -102,7 +104,7 @@ class Pin extends Component {
 		if (response.status == 400) {
 			this.setState({wrongCredentials: true});
 		} else {
-		this.setState({ is_follow: !this.state. is_follow})}
+		this.setState({ is_follow: !this.state.is_follow})}
 		console.log(data)
 		// change the buttun to infollow
 	}
@@ -188,19 +190,19 @@ class Pin extends Component {
 						<div className='d-flex align-items-center align-content-center'>
 							<div>
 								{/* replace with owner profile link with owner_id */}
-								<a href={this.state.owner}>  
+								<Link to={'/profile/'+this.state.owner}>  
 									<img
 										className='ownerImg rounded-circle m-2'
 										src={process.env.REACT_APP_HOST_IP +this.state.profilePic}
 										alt='profile pic'></img>
-								</a>
+								</Link>
 							</div>
 							<div>
 								<span>
 									{/* replace with owner profile link with owner_id */}
-									<a className='link' href={this.state.ownerProfile}>
+									<Link to={'/profile/'+this.state.owner}>  										
 										{this.state.owner_username}
-									</a>
+									</Link>
 								</span>
 								{/* <br />
 								<span>{this.state.ownerFollowers}</span> */}
