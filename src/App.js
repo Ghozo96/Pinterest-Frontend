@@ -55,8 +55,7 @@ class App extends Component {
 		this.get_boards(token)
 	};
 
-	get_boards= async (token)=>{
-		this.state.myheader.append('Authorization', `Token ${token}`);
+	get_boards = async (token)=>{
 		var requestOptions = {
 			method: 'GET',
 			headers: this.state.myheader,
@@ -68,7 +67,10 @@ class App extends Component {
 		);
 		let data = await response.json();
 		// window.localStorage.setItem('boards', data.res)
-		this.setState({my_boards: data.results})		
+		this.setState({my_boards: data.results})
+		console.log(data.results);
+		console.log("===============")
+		console.log(this.state.my_boards)		
 	}
 
 	redirectToLoginAfterRegister = (isRegistered) => {
@@ -110,11 +112,21 @@ class App extends Component {
 				username: loggedInUser.username,
 			});
 			this.get_boards(loggedInUser.token)
+			this.state.myheader.append('Authorization', `Token ${loggedInUser.token}`);
 		}
 
 		//fetching pins
 		this.setState({loading: true});
-		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
+		var requestOptions = {
+			method: 'GET',
+			headers: this.state.myheader,
+		};
+
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/pin/list`,
+			requestOptions
+		);
+	
 		let data = await response.json();
 		this.setState({pinsData: data.results, nextPage: data.next}, () =>
 			this.setState({loading: false})
