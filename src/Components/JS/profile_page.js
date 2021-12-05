@@ -94,7 +94,7 @@ class ProfilePage extends Component {
 								data-bs-toggle='dropdown'
 								aria-expanded='false'
 								onClick={this.getFollowers}>
-								Followers: {this.state.follower_count}
+								Following: {this.state.follower_count}
 							</Link>
 							<ul
 								className='dropdown-menu'
@@ -102,14 +102,14 @@ class ProfilePage extends Component {
 								id='dd-nav-setting'
 								style={{maxHeight: '250px'}}>
 								<li>
-									<h6 className='dropdown-header'>Followers</h6>
+									<h6 className='dropdown-header'>Following</h6>
 								</li>
 								{this.state.follower_count > 0 ? (
 									this.state.followers.map((follower) => {
 										return <FollowingComponent {...follower} />;
 									})
 								) : (
-									<p className='lead fs-6 text-center'>Ya3eni you have no followers</p>
+									<p className='lead fs-6 text-center'>You don't follow anyone</p>
 								)}
 							</ul>
 						</div>
@@ -122,7 +122,7 @@ class ProfilePage extends Component {
 								data-bs-toggle='dropdown'
 								aria-expanded='false'
 								onClick={this.getFollowing}>
-								Following: {this.state.following_count}
+								Followers: {this.state.following_count}
 							</Link>
 							<ul
 								className='dropdown-menu'
@@ -130,14 +130,14 @@ class ProfilePage extends Component {
 								id='dd-nav-setting'
 								style={{maxHeight: '250px'}}>
 								<li>
-									<h6 className='dropdown-header'>Following</h6>
+									<h6 className='dropdown-header'>Followers</h6>
 								</li>
 								{this.state.following_count > 0 ? (
 									this.state.following.map((following) => {
 										return <FollowingComponent {...following} />;
 									})
 								) : (
-									<p className='lead fs-6 text-center'>You don't follow anyone</p>
+									<p className='lead fs-6 text-center'>You have no followers</p>
 								)}
 							</ul>
 						</div>
@@ -225,7 +225,7 @@ class ProfilePage extends Component {
 								return (
 									<SmallPin
 										key={pin.id}
-										// title={pin.title}
+										title={pin.title}
 										pinImage={pin.pin_picture}
 										pin_id={pin.id}
 									/>

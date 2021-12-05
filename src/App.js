@@ -24,6 +24,7 @@ import Board from './Components/JS/Board';
 import Boards from './Components/JS/Boards';
 import {Component, Fragment} from 'react';
 import Spinner from './Components/JS/Spinner';
+import Pagination from './Components/JS/Pagination';
 
 class App extends Component {
 	state = {
@@ -36,6 +37,10 @@ class App extends Component {
 		noResults: false,
 		loading: false,
 		searchedParam: '',
+		currentPage: 1,
+		nextPage: null,
+		prevPage: null,
+		maxPageNum: null,
 	};
 
 	receiveTokenAndRedirect = (token, isLoggedIn, user_id) => {
@@ -92,9 +97,42 @@ class App extends Component {
 		this.setState({loading: true});
 		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
 		let data = await response.json();
-		this.setState({pinsData: data.results}, () =>
+		this.setState({pinsData: data.results, nextPage: data.next}, () =>
 			this.setState({loading: false})
 		);
+
+		//calculating maximum page number
+		this.setState({maxPageNum: this.calculateMaxPageNum(data.count)});
+	};
+
+	fetchingNextOrPrevPins = async (buttonClicked) => {
+		let response = null;
+		let data = null;
+		this.setState({loading: true});
+
+		if (buttonClicked === 'Next' && this.state.nextPage != null) {
+			response = await fetch(this.state.nextPage);
+			this.setState({currentPage: this.state.currentPage + 1});
+		} else if (buttonClicked === 'Previous' && this.state.prevPage != null) {
+			response = await fetch(this.state.prevPage);
+			this.setState({currentPage: this.state.currentPage - 1});
+		}
+
+		data = await response.json();
+		this.setState(
+			{pinsData: data.results, nextPage: data.next, prevPage: data.previous},
+			() => {
+				this.setState({loading: false});
+			}
+		);
+	};
+
+	calculateMaxPageNum = (pinsCount) => {
+		let result = Math.trunc(pinsCount / 20);
+		let remainder = pinsCount % 20;
+		if (remainder != 0) result += 1;
+
+		return result;
 	};
 
 	logout = () => {
@@ -108,11 +146,16 @@ class App extends Component {
 	};
 
 	NavigateToHomepage = async () => {
-		this.setState({loading: true, noResults: false});
+		this.setState({
+			loading: true,
+			noResults: false,
+			currentPage: 1,
+			prevPage: null,
+		});
 		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
 		let data = await response.json();
 		this.setState({pinsData: data.results}, () =>
-			this.setState({loading: false})
+			this.setState({loading: false, nextPage: data.next})
 		);
 	};
 
@@ -122,6 +165,9 @@ class App extends Component {
 				No results found for {this.state.searchedParam}
 			</div>
 		);
+
+		let num = 60;
+		console.log(Math.trunc(num / 20));
 
 		return (
 			<Router>
@@ -249,6 +295,13 @@ class App extends Component {
 											)}
 										</div>
 									)}
+									<Pagination
+										fetchingNextOrPrevPins={
+											this.fetchingNextOrPrevPins
+										}
+										currentPage={this.state.currentPage}
+										maxPageNum={this.state.maxPageNum}
+									/>
 								</Fragment>
 							)}
 						/>
