@@ -11,6 +11,7 @@ import Spinner from './Spinner';
 class ProfilePage extends Component {
 	state = {
 		boards: [],
+		pinsData: [],
 		email: '',
 		user_id: '',
 		boardClicked: false,
@@ -19,34 +20,53 @@ class ProfilePage extends Component {
 		followers: [],
 		following: [],
 		loading: false,
+		is_follow: false,
+		myheader: new Headers(),
 	};
 
 	componentDidMount = async () => {
 		this.state.user_id = this.props.match.params.id;
+		this.state.myheader.append(
+			'Authorization',
+			`Token ${window.localStorage.getItem('token')}`
+		);
+		var requestOptions = {
+			method: 'GET',
+			headers: this.state.myheader,
+		};
 
 		let response = await fetch(
-			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}`
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}`,
+			requestOptions
 		);
 		let data = await response.json();
 		this.setState({...data});
-	};
 
-	getFollowers = async () => {
-		let response = await fetch(
-			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}/followers`
+		this.setState({loading: true});
+		response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/pin/list`,
+			requestOptions
 		);
-		let data = await response.json();
-		this.setState({followers: data.results});
-		console.log(this.state.followers);
+		data = await response.json();
+		this.setState({pinsData: data.results}, () =>
+			this.setState({loading: false})
+		);
 	};
 
 	getFollowing = async () => {
 		let response = await fetch(
-			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}/followings`
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}/followers`
 		);
 		let data = await response.json();
 		this.setState({following: data.results});
-		console.log(this.state.following);
+	};
+
+	getFollowers = async () => {
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.state.user_id}/followings`
+		);
+		let data = await response.json();
+		this.setState({followers: data.results});
 	};
 
 	showBoardPins = async (board_id, name) => {
@@ -65,6 +85,38 @@ class ProfilePage extends Component {
 		);
 	};
 
+	follow = async () => {
+		var formdata = new FormData();
+		formdata.append('user_id', this.props.match.params.id);
+
+		var requestOptions = {
+			method: 'PATCH',
+			headers: this.state.myheader,
+			body: formdata,
+		};
+
+		let followcase = this.state.is_follow ? 'unfollow' : 'follow';
+		console.log(followcase);
+
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/profile/${this.props.match.params.id}/${followcase}`,
+			requestOptions
+		);
+		let data = await response.json();
+		if (response.status == 400) {
+			this.setState({wrongCredentials: true});
+		} else {
+			this.setState({is_follow: !this.state.is_follow});
+		}
+		console.log(response);
+	};
+
+	hideEditBtn =
+		this.props.match.params.id === window.localStorage.getItem('user_id');
+
+	showFollowBtn =
+		this.props.match.params.id != window.localStorage.getItem('user_id');
+
 	render() {
 		// console.log(this.state.boards);
 		return (
@@ -79,8 +131,7 @@ class ProfilePage extends Component {
 							alt='your image'></img>
 					</div>
 
-					<div className='lead fs-2 mt-0 fw-bold '>{}</div>
-					<div className='lead fs-6 mt-0 fw-normal '>
+					<div className='lead fs-6 mt-2 fw-normal '>
 						{this.state.username}
 					</div>
 
@@ -93,8 +144,8 @@ class ProfilePage extends Component {
 								id='dropdownMenuButton1'
 								data-bs-toggle='dropdown'
 								aria-expanded='false'
-								onClick={this.getFollowers}>
-								Following: {this.state.follower_count}
+								onClick={this.getFollowing}>
+								Following: {this.state.following_count}
 							</Link>
 							<ul
 								className='dropdown-menu'
@@ -104,12 +155,14 @@ class ProfilePage extends Component {
 								<li>
 									<h6 className='dropdown-header'>Following</h6>
 								</li>
-								{this.state.follower_count > 0 ? (
-									this.state.followers.map((follower) => {
-										return <FollowingComponent {...follower} />;
+								{this.state.following_count > 0 ? (
+									this.state.following.map((following) => {
+										return <FollowingComponent {...following} />;
 									})
 								) : (
-									<p className='lead fs-6 text-center'>You don't follow anyone</p>
+									<p className='lead fs-6 text-center'>
+										You don't follow anyone
+									</p>
 								)}
 							</ul>
 						</div>
@@ -121,8 +174,8 @@ class ProfilePage extends Component {
 								id='dropdownMenuButton1'
 								data-bs-toggle='dropdown'
 								aria-expanded='false'
-								onClick={this.getFollowing}>
-								Followers: {this.state.following_count}
+								onClick={this.getFollowers}>
+								Followers: {this.state.follower_count}
 							</Link>
 							<ul
 								className='dropdown-menu'
@@ -132,25 +185,37 @@ class ProfilePage extends Component {
 								<li>
 									<h6 className='dropdown-header'>Followers</h6>
 								</li>
-								{this.state.following_count > 0 ? (
-									this.state.following.map((following) => {
-										return <FollowingComponent {...following} />;
+								{this.state.follower_count > 0 ? (
+									this.state.followers.map((follower) => {
+										return <FollowingComponent {...follower} />;
 									})
 								) : (
-									<p className='lead fs-6 text-center'>You have no followers</p>
+									<p className='lead fs-6 text-center'>
+										You have no followers
+									</p>
 								)}
 							</ul>
 						</div>
 					</div>
 					<div>
-						<Link
-							to={`/profile/${window.localStorage.getItem(
-								'user_id'
-							)}/edit`}
-							class='btn btn-lg rounded-pill mt-2'
-							id='edit-profile'>
-							Edit Profile
-						</Link>
+						{this.hideEditBtn && (
+							<Link
+								to={`/profile/${window.localStorage.getItem(
+									'user_id'
+								)}/edit`}
+								class='btn btn-lg rounded-pill mt-2'
+								id='edit-profile'>
+								Edit Profile
+							</Link>
+						)}
+						{this.showFollowBtn && (
+							<button
+								type='button'
+								className='btn btn-lg optionsRight mt-2 btn-danger rounded-pill'
+								onClick={this.follow}>
+								{this.state.is_follow ? 'UnFollow' : 'Follow'}
+							</button>
+						)}
 					</div>
 					<div className='dropdown mt-4 align-self-end me-4'>
 						<Link
@@ -224,16 +289,40 @@ class ProfilePage extends Component {
 							this.state.boardClickedPins.map((pin) => {
 								return (
 									<div>
-										{/* <button>x</button> */}
-									<SmallPin
-										key={pin.id}
-										title={pin.title}
-										pinImage={pin.pin_picture}
-										pin_id={pin.id}
-									/>
+										<SmallPin
+											key={pin.id}
+											title={pin.title}
+											pinImage={pin.pin_picture}
+											pin_id={pin.id}
+										/>
 									</div>
-
-									
+								);
+							})
+						) : (
+							<Spinner />
+						))}
+				</div>
+				<hr />
+				{this.state.pinsData.length != 0 && (
+					<p className='lead fs-2 fw-normal text-center mt-5'>
+						Saved Pins
+					</p>
+				)}
+				<div className='d-flex flex-wrap justify-content-evenly mt-3'>
+					{this.state.pinsData.length != 0 &&
+						(!this.state.loading ? (
+							this.state.pinsData.map((pin) => {
+								return (
+									pin.pin_saved && (
+										<div>
+											<SmallPin
+												key={pin.id}
+												title={pin.title}
+												pinImage={pin.pin_picture}
+												pin_id={pin.id}
+											/>
+										</div>
+									)
 								);
 							})
 						) : (
