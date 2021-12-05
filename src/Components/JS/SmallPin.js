@@ -65,6 +65,7 @@ class SmallPin extends Component {
 						<BoardList
 							my_boards={this.props.my_boards}
 							pin_id={this.props.pin_id}
+							Sum_Handle={this.BoardSubmittionHandler}
 						/>
 						<button className='btn btn-danger m-2 rounded-pill saveButton'
 								onClick={this.savePin}>

@@ -111,8 +111,9 @@ class App extends Component {
 				user_id: loggedInUser.id,
 				username: loggedInUser.username,
 			});
-			this.get_boards(loggedInUser.token)
+			
 			this.state.myheader.append('Authorization', `Token ${loggedInUser.token}`);
+			this.get_boards(loggedInUser.token)
 		}
 
 		//fetching pins
