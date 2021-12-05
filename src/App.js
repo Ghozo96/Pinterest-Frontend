@@ -56,7 +56,7 @@ class App extends Component {
 	};
 
 	get_boards= async (token)=>{
-		this.state.myheader.append('Authorization', `Token ${token}`);
+		
 		var requestOptions = {
 			method: 'GET',
 			headers: this.state.myheader,
@@ -110,11 +110,21 @@ class App extends Component {
 				username: loggedInUser.username,
 			});
 			this.get_boards(loggedInUser.token)
+			this.state.myheader.append('Authorization', `Token ${loggedInUser.token}`);
 		}
 
 		//fetching pins
 		this.setState({loading: true});
-		let response = await fetch(`${process.env.REACT_APP_HOST_IP}/pin/list`);
+		var requestOptions = {
+			method: 'GET',
+			headers: this.state.myheader,
+		};
+
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/pin/list`,
+			requestOptions
+		);
+	
 		let data = await response.json();
 		this.setState({pinsData: data.results, nextPage: data.next}, () =>
 			this.setState({loading: false})

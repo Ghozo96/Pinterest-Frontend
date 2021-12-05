@@ -161,7 +161,6 @@ class Pin extends Component {
 	};
 
 	render() {
-		console.log(this.props.my_boards, 'pin');
 
 		return (
 			<div>
