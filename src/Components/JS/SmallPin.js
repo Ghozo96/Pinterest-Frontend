@@ -3,10 +3,6 @@ import {Link} from 'react-router-dom';
 import '../CSS/SmallPin.css';
 import BoardList from './BoardList';
 class SmallPin extends Component {
-	// goTo() {
-	//     console.log("test")
-	//     window.location = "http://www.google.com/"
-	// }
 	BoardSubmittionHandler = (msg) => {
 		this.setState({board_msg: msg});
 		console.log(msg);

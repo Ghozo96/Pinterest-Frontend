@@ -19,6 +19,7 @@ class CreatePin extends Component {
 			changedPP: false,
 			submited: false,
 			websiteError: false,
+			isFormEmpty: false,
 
 			userid: window.localStorage.getItem('user_id'),
 			username: window.localStorage.getItem('username'),
@@ -41,13 +42,16 @@ class CreatePin extends Component {
 		e.preventDefault();
 		this.setState({submited: false});
 
-		if (
+		if (this.isFormFieldEmpty(e)) {
+			console.log('');
+			this.setState({isFormEmpty: true});
+		} else if (
 			this.WebsiteInValid(e.target.destination_link.value) &&
 			e.target.destination_link.value
 		) {
-			this.setState({websiteError: true});
+			this.setState({websiteError: true, isFormEmpty: false});
 		} else {
-			this.setState({websiteError: false});
+			this.setState({websiteError: false, isFormEmpty: false});
 			var formdata = new FormData();
 			formdata.append('title', e.target.title.value);
 			formdata.append('description', e.target.description.value);
@@ -72,12 +76,33 @@ class CreatePin extends Component {
 			let data = await response.json();
 
 			console.log(data);
-            if (response.status == 400) {
-                console.log('error' )  ; 
-             } else {
-			this.setState({submited: true});
-        }
+			if (response.status == 400) {
+				console.log('error');
+			} else {
+				this.setState({submited: true});
+			}
+
+			setTimeout(() => {
+				this.props.history.push(
+					`/profile/${window.localStorage.getItem('user_id')}`
+				);
+			}, 2000);
+
+			//
 			// here we will redirect to the home page
+		}
+	};
+
+	isFormFieldEmpty = (e) => {
+		console.log('form is empty');
+		if (
+			e.target.title.value === '' ||
+			e.target.description.value === '' ||
+			e.target.destination_link.value === ''
+		) {
+			return true;
+		} else {
+			return false;
 		}
 	};
 
@@ -114,9 +139,15 @@ class CreatePin extends Component {
 						</label>
 					</div>
 
+					{this.state.isFormEmpty && (
+						<div className='lead fs-4 mb-2 text-danger text-center'>
+							Please enter the missing fields!
+						</div>
+					)}
+
 					<div>
 						<input
-							className='form-control titleInput fs-1 fw-bold mb-3 border-0 border-bottom'
+							className='form-control title fs-1 fw-bold mb-3 border-0 border-bottom'
 							type='text'
 							placeholder='Add Your Title'
 							name='title'
@@ -166,29 +197,24 @@ class CreatePin extends Component {
 						/>
 						{this.state.websiteError && (
 							<div className='lead fs-6 mb-3 text-danger text-start'>
-								Incorrect format, please enter something like this:
-								www.example.com
+								Incorrect website format, please enter something like
+								this: www.example.com
 							</div>
 						)}
 					</div>
 					{this.state.submited && (
-						<div className='lead fs-6 mb-3 text-success text-center'>
+						<div className='lead fs-4 mb-3 text-success text-center'>
 							your Pin has been created successfully
 						</div>
 					)}
-					<div className='optionsBar d-flex align-items-center align-content-center justify-content-center mb-3'>
-						<div className='d-flex align-items-center align-content-center flex-wrap'>
-							<BoardList />
 
-							<div>
-								<button
-									type='submit'
-									className='btn m-1 btn-danger rounded-pill'>
-									{' '}
-									Save{' '}
-								</button>
-							</div>
-						</div>
+					<div className='text-center'>
+						<button
+							type='submit'
+							className='btn m-1 btn-danger rounded-pill'>
+							{' '}
+							Save{' '}
+						</button>
 					</div>
 				</form>
 			</div>

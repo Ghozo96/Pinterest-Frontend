@@ -333,7 +333,7 @@ class App extends Component {
 										{...props}
 										NavigateToHomepage={this.NavigateToHomepage}
 									/>
-									<CreatePin />
+									<CreatePin {...props}/>
 								</Fragment>
 							)}
 						/>
@@ -360,7 +360,7 @@ class App extends Component {
 										{...props}
 										NavigateToHomepage={this.NavigateToHomepage}
 									/>
-									<CreateBoard />
+									<CreateBoard {...props}/>
 								</Fragment>
 							)}
 						/>
