@@ -41,17 +41,35 @@ class App extends Component {
 		nextPage: null,
 		prevPage: null,
 		maxPageNum: null,
+
+		myheader: new Headers(),
+		my_boards:[],
 	};
 
-	receiveTokenAndRedirect = (token, isLoggedIn, user_id) => {
+	receiveTokenAndRedirect =  (token, isLoggedIn, user_id) => {
 		this.setState({
 			token: token,
 			isLoggedIn: isLoggedIn,
 			user_id: user_id,
 		});
-		// console.log(token);
-		// console.log(user_id);
+		this.get_boards(token)
 	};
+
+	get_boards= async (token)=>{
+		this.state.myheader.append('Authorization', `Token ${token}`);
+		var requestOptions = {
+			method: 'GET',
+			headers: this.state.myheader,
+		};
+
+		let response = await fetch(
+			`${process.env.REACT_APP_HOST_IP}/board/mine`,
+			requestOptions
+		);
+		let data = await response.json();
+		// window.localStorage.setItem('boards', data.res)
+		this.setState({my_boards: data.results})		
+	}
 
 	redirectToLoginAfterRegister = (isRegistered) => {
 		this.setState({
@@ -91,6 +109,7 @@ class App extends Component {
 				user_id: loggedInUser.id,
 				username: loggedInUser.username,
 			});
+			this.get_boards(loggedInUser.token)
 		}
 
 		//fetching pins
@@ -291,7 +310,7 @@ class App extends Component {
 											{this.state.noResults ? (
 												noResultsText
 											) : (
-												<Pins pinsData={this.state.pinsData} />
+												<Pins pinsData={this.state.pinsData} my_boards={this.state.my_boards} />
 											)}
 										</div>
 									)}
@@ -328,7 +347,7 @@ class App extends Component {
 										logout={this.logout}
 										NavigateToHomepage={this.NavigateToHomepage}
 									/>
-									<Pin {...props} />
+									<Pin {...props} my_boards={this.state.my_boards} />
 								</Fragment>
 							)}
 						/>

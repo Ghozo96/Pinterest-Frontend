@@ -35,6 +35,7 @@ class Pin extends Component {
 
 			pin_id:'',
 			loading:true,
+			board_msg:'',
 
 			userid : window.localStorage.getItem('user_id'),
 			username: window.localStorage.getItem('username'),
@@ -137,9 +138,13 @@ class Pin extends Component {
 	ChangeHandler=(e)=>{
         this.setState({ [e.target.name]: e.target.value});
     }
-
+	BoardSubmittionHandler=(msg)=>{
+        this.setState({ board_msg: msg});
+		console.log(msg)
+	}
 
 	render() {
+		console.log(this.props.my_boards,'pin')
 		
 		return (
 		<div>
@@ -161,7 +166,7 @@ class Pin extends Component {
 							</div>
 						</div>
 						<div className='d-flex align-items-center align-content-center  flex-wrap'>
-							<BoardList />
+							<BoardList my_boards={this.props.my_boards} pin_id={this.state.pin_id} Sum_Handle={this.BoardSubmittionHandler} />
 							<div>
 								<button
 									type='button'
@@ -169,8 +174,14 @@ class Pin extends Component {
 									{this.state.pin_saved? 'Unsave':'Save'}
 								</button>
 							</div>
+						
 						</div>
 					</div>
+					{this.state.board_msg=='' ? <div></div> : (
+						<div className='lead fs-6 mb-3 text-success text-center'>
+							{this.state.board_msg}
+						</div>
+						)}
 
 					<div>
 						<a className='link' href={this.state.destination_link}>

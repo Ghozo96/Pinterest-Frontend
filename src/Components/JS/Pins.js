@@ -39,6 +39,7 @@ class Pins extends React.Component {
 								title={pin.title}
 								pinImage={pin.pin_picture}
 								pin_id={pin.id}
+								my_boards={this.props.my_boards} 
 							/>
 						);
 					})}
