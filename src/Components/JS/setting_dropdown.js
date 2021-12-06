@@ -58,7 +58,7 @@ class SettingDD extends Component {
 
 						<li className='mx-2 '>
 							<Link
-								to='/profile/edit'
+								to={`/profile/${window.localStorage.getItem('user_id')}/edit`}
 								class='dropdown-item fw-bolder'
 								id='setting-elem'>
 								Edit Profile
