@@ -12,7 +12,7 @@ class ProfilePage extends Component {
 	state = {
 		boards: [],
 		pins: [],
-		pinsData: [],
+		savedPins: [],
 		email: '',
 		user_id: '',
 		boardClicked: false,
@@ -45,15 +45,6 @@ class ProfilePage extends Component {
 		);
 		let data = await response.json();
 		this.setState({...data});
-
-		response = await fetch(
-			`${process.env.REACT_APP_HOST_IP}/pin/list`,
-			requestOptions
-		);
-		data = await response.json();
-		this.setState({pinsData: data.results}, () =>
-			this.setState({loading: false})
-		);
 
 		this.setState({loadingProfile: false});
 	};
@@ -337,7 +328,7 @@ class ProfilePage extends Component {
 							))}
 					</div>
 
-					{this.state.pinsData.length != 0 && (
+					{this.state.savedPins.length != 0 && (
 						<div>
 							<hr />
 							<p className='lead fs-2 fw-normal text-center mt-5'>
@@ -346,20 +337,18 @@ class ProfilePage extends Component {
 						</div>
 					)}
 					<div className='d-flex flex-wrap justify-content-evenly mt-3'>
-						{this.state.pinsData.length != 0 &&
+						{this.state.savedPins.length != 0 &&
 							(!this.state.loading ? (
-								this.state.pinsData.map((pin) => {
+								this.state.savedPins.map((pin) => {
 									return (
-										pin.pin_saved && (
-											<div>
-												<SmallPin
-													key={pin.id}
-													title={pin.title}
-													pinImage={pin.pin_picture}
-													pin_id={pin.id}
-												/>
-											</div>
-										)
+										<div>
+											<SmallPin
+												key={pin.id}
+												title={pin.title}
+												pinImage={pin.pin_picture}
+												pin_id={pin.id}
+											/>
+										</div>
 									);
 								})
 							) : (

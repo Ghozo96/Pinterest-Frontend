@@ -105,7 +105,7 @@ class App extends Component {
 			id: localStorage.getItem('user_id'),
 			username: localStorage.getItem('username'),
 		};
-		if (loggedInUser) {
+		if (window.localStorage.getItem('token') != null) {
 			this.setState({
 				token: loggedInUser.token,
 				user_id: loggedInUser.id,
