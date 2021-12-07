@@ -117,8 +117,8 @@ class Login extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className='container text-center'>
-					<div style={{margin: '0 30%'}}>
+				<div style={{maxWidth: '500px'}} className='container-fluid text-center'>
+					<div style={{maxWidth: '500px'}} className='container-fluid text-center'>
 						<form
 							name='form'
 							onSubmit={this.handleSubmit}
@@ -134,7 +134,7 @@ class Login extends Component {
 									Find new ideas to try
 								</div>
 							</div>
-							<div className='d-flex flex-column mx-md-5 align-items-center'>
+							<div className='d-flex flex-column mx-5 align-items-center'>
 								<div className='lead fs-5 fw-normal mb-2'>
 									Enter your credentials to login
 								</div>
