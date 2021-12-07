@@ -170,6 +170,7 @@ class Pin extends Component {
 					<div className='container pinContainer d-flex flex-lg-row flex-column my-5 text-start'>
 						<div className='imgContainer d-flex align-items-start justify-content-center'>
 							<img
+								className='img-fluid'
 								src={
 									this.state.pin_picture
 										? this.state.pin_picture
